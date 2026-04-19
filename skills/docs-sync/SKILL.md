@@ -52,6 +52,8 @@ find . -type f \( -name "*.md" -o -name "*.rst" -o -name "*.txt" \) \
 
 # Identify the main docs: README, CHANGELOG, API docs, architecture docs
 ls README* CHANGELOG* CONTRIBUTING* LICENSE* 2>/dev/null
+# AI assistant context files — common in modern repos
+ls CLAUDE.md AGENTS.md GEMINI.md COPILOT.md .cursorrules 2>/dev/null
 ls docs/ documentation/ 2>/dev/null
 ```
 
@@ -78,11 +80,14 @@ General mapping rules (adapt to what you find in the repo):
 |---|---|
 | New public function / class / module | README usage section, API reference, relevant `docs/` page |
 | Renamed / removed symbol | Any doc that mentions the old name |
-| New CLI flag or config option | README, config reference docs |
+| New CLI flag or config option | README, config reference docs, CLAUDE.md if it describes tool usage |
 | Dependency added / removed | README installation section, CONTRIBUTING setup guide |
 | New file in a documented directory | README file listing or architecture doc |
 | Bug fix with user-visible behavior change | CHANGELOG, README caveats |
 | Breaking change | CHANGELOG, README migration section, CONTRIBUTING |
+| New agent, command, or AI workflow | AGENTS.md agents/commands table, CLAUDE.md architecture section, README |
+| New AI context rule or convention | CLAUDE.md rules table, AGENTS.md if it affects agent behavior |
+| Project structure change | CLAUDE.md architecture section, AGENTS.md, README project layout |
 
 ## Step 4 — Read Only Affected Sections
 
@@ -124,6 +129,15 @@ For each affected doc, identify the minimal change:
 **Breaking change:**
 - Add a CHANGELOG entry under the correct version heading
 - Add a migration note in README or a dedicated migration doc
+
+**New agent, command, or AI skill:**
+- Add a row to the agents/commands table in AGENTS.md (if present)
+- Update CLAUDE.md architecture section if it lists agents or commands
+- Update README if it has a project infrastructure or AI tooling section
+
+**New AI context rule or project convention:**
+- Update CLAUDE.md rules table or the relevant rules section
+- Update AGENTS.md if the rule affects how agents behave
 
 ## Step 6 — Apply Surgical Updates
 
