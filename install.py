@@ -1,92 +1,232 @@
 #!/usr/bin/env python3
-# Claude DevStudio Installer
-
 """
-Claude DevStudio Installer
-Copies skill files to ~/.claude/skills/
+Claude DevStudio Installer — cross-platform, multi-tool.
+
+Targets:
+  claude  (default)  Install to ~/.claude/skills/ for Claude Code CLI
+  gemini             Generate GEMINI.md for Gemini CLI
+  codex              Generate AGENTS.md for Codex CLI / OpenCode
+  cursor             Generate .cursor/rules/ for Cursor
+  aider              Generate aider-skills/ + .aider.conf.yml for Aider
+  generic            Generate system-prompt.md for any AI tool or model API
+
+Usage:
+  python install.py                     # Claude Code (default)
+  python install.py --target gemini
+  python install.py --target generic --output my-prompt.md
 """
 
-import os
+import argparse
 import shutil
 import sys
 from pathlib import Path
 
-def main():
-    # Determine paths
-    script_dir = Path(__file__).parent.absolute()
-    skills_source = script_dir / "skills"
-    claude_dir = Path.home() / ".claude"
-    skills_dest = claude_dir / "skills"
 
-    print("Claude DevStudio Installer")
-    print("=" * 40)
+def strip_frontmatter(text: str) -> str:
+    """Remove YAML frontmatter enclosed in --- delimiters."""
+    lines = text.splitlines(keepends=True)
+    if not lines or lines[0].strip() != "---":
+        return text
+    end = next(
+        (i for i, ln in enumerate(lines[1:], 1) if ln.strip() == "---"), None
+    )
+    if end is None:
+        return text
+    return "".join(lines[end + 1 :])
 
-    # Check source directory exists
-    if not skills_source.exists():
-        print(f"[ERROR] Skills directory not found at {skills_source}")
-        sys.exit(1)
 
-    # Get all skill directories
-    skill_dirs = [d for d in skills_source.iterdir() if d.is_dir()]
-    if not skill_dirs:
-        print(f"[ERROR] No skill directories found in {skills_source}")
-        sys.exit(1)
-
-    # Create destination directory
-    skills_dest.mkdir(parents=True, exist_ok=True)
-    print(f"[OK] Target directory: {skills_dest}")
-
-    # Check for existing skills
-    existing_skills = []
-    for skill_dir in skill_dirs:
-        dest_skill_dir = skills_dest / skill_dir.name
-        if dest_skill_dir.exists():
-            existing_skills.append(skill_dir.name)
-
-    if existing_skills:
-        print(f"\n[WARNING] Found {len(existing_skills)} existing skills:")
-        for skill in existing_skills[:10]:  # Show first 10
-            print(f"  ! {skill}")
-        if len(existing_skills) > 10:
-            print(f"  ... and {len(existing_skills) - 10} more")
-
-        response = input("\nOverwrite existing skills? (y/N): ")
-        if response.lower() != 'y':
-            print("[CANCELLED] Installation cancelled.")
-            print("Tip: Use uninstall script first to remove old skills.")
-            sys.exit(0)
-
-    print(f"\n[INSTALL] Installing {len(skill_dirs)} skills:")
-    installed_count = 0
-    for skill_dir in skill_dirs:
+def iter_skills(skills_dir: Path):
+    """Yield (name, stripped_content) for each skill in sorted order."""
+    for skill_dir in sorted(skills_dir.iterdir()):
+        if not skill_dir.is_dir():
+            continue
         skill_file = skill_dir / "SKILL.md"
         if not skill_file.exists():
-            print(f"  ⚠ Skipping {skill_dir.name} (no SKILL.md)")
             continue
+        yield skill_dir.name, strip_frontmatter(skill_file.read_text(encoding="utf-8"))
 
-        dest_skill_dir = skills_dest / skill_dir.name
-        dest_skill_dir.mkdir(parents=True, exist_ok=True)
 
-        # Copy SKILL.md and any other files in the skill directory
-        for file in skill_dir.iterdir():
-            if file.is_file():
-                dest_file = dest_skill_dir / file.name
-                shutil.copy2(file, dest_file)
+TOOL_MAPPING = """
+| Skill tool | Generic equivalent           |
+|------------|------------------------------|
+| Read       | Read file contents           |
+| Write      | Write/create file            |
+| Edit       | Edit/patch file              |
+| Bash       | Run shell command            |
+| Grep       | Search file contents (regex) |
+| Glob       | List files by pattern        |
+| TodoWrite  | Track tasks in memory        |
+"""
 
+
+# ── Target handlers ────────────────────────────────────────────────────────────
+
+def install_claude(skills_dir: Path) -> None:
+    dest = Path.home() / ".claude" / "skills"
+    dest.mkdir(parents=True, exist_ok=True)
+    skill_dirs = [d for d in skills_dir.iterdir() if d.is_dir()]
+
+    existing = [d for d in skill_dirs if (dest / d.name).exists()]
+    if existing:
+        print(f"[WARNING] Found {len(existing)} existing skills in {dest}")
+        resp = input("Overwrite existing skills? (y/N): ")
+        if resp.lower() != "y":
+            print("[CANCELLED]")
+            sys.exit(0)
+
+    count = 0
+    for skill_dir in sorted(skill_dirs):
+        skill_file = skill_dir / "SKILL.md"
+        if not skill_file.exists():
+            print(f"  skipping {skill_dir.name} (no SKILL.md)")
+            continue
+        target_dir = dest / skill_dir.name
+        target_dir.mkdir(parents=True, exist_ok=True)
+        for f in skill_dir.iterdir():
+            if f.is_file():
+                shutil.copy2(f, target_dir / f.name)
         print(f"  + {skill_dir.name}")
-        installed_count += 1
+        count += 1
 
-    print(f"\n[SUCCESS] Installation complete! Installed {installed_count} skills.")
-    print("\nUsage:")
-    print("  1. Open Claude Code CLI")
-    print("  2. Type / to see available skills")
-    print("  3. Try /tdd-red-green, /ci-setup, /test-mutation, /infrastructure, etc.")
-    print("\nTip: With 99 professional skills across 3 tiers, Claude DevStudio saves 10-15 hours per week!")
-    print("     Tier 1 (16): High-impact essentials | Tier 2 (37): Advanced features | Tier 3 (16): Power user tools")
+    manifest = dest / ".claude-devstudio-manifest"
+    manifest.write_text("\n".join(d.name for d in sorted(skill_dirs)) + "\n")
+    print(f"\n[SUCCESS] Installed {count} skills to {dest}")
+    print("Type / in Claude Code to see available skills")
+
+
+def install_generic(skills_dir: Path, output: Path) -> None:
+    parts = [
+        "# Claude DevStudio Skills — System Prompt\n\n"
+        "You are an expert software engineering assistant. The following skills define\n"
+        "specialized workflows. Follow a skill's instructions when the user invokes it by name.\n\n"
+        + TOOL_MAPPING + "\n---\n\n"
+    ]
+    count = 0
+    for name, content in iter_skills(skills_dir):
+        parts.append(f"## Skill: {name}\n\n{content}\n\n---\n\n")
+        count += 1
+    parts.append(f"<!-- Generated by Claude DevStudio. {count} skills. -->\n")
+    output.write_text("".join(parts), encoding="utf-8")
+    print(f"[OK] Generated {output} with {count} skills")
+    print("     Pass this file as a system prompt to any AI tool or model API.")
+
+
+def install_gemini(skills_dir: Path, output: Path) -> None:
+    parts = [
+        "# Claude DevStudio Skills for Gemini CLI\n\n"
+        "This file is read automatically by Gemini CLI as project context.\n"
+        "Invoke a skill by name: \"Use the commit skill\", \"Run security-scan\", etc.\n\n"
+        + TOOL_MAPPING + "\n---\n\n## Skills Reference\n\n"
+    ]
+    count = 0
+    for name, content in iter_skills(skills_dir):
+        parts.append(f"### {name}\n\n{content}\n\n---\n\n")
+        count += 1
+    parts.append(f"<!-- Generated by Claude DevStudio Gemini adapter. {count} skills. -->\n")
+    output.write_text("".join(parts), encoding="utf-8")
+    print(f"[OK] Generated {output} with {count} skills")
+    print("     Place GEMINI.md in your project root. Gemini CLI will load it automatically.")
+
+
+def install_codex(skills_dir: Path, output: Path) -> None:
+    parts = [
+        "# Claude DevStudio Skills for Codex CLI / OpenCode\n\n"
+        "This file is read as agent context. Invoke a skill by name in your prompt.\n\n"
+        + TOOL_MAPPING + "\n---\n\n## Skills\n\n"
+    ]
+    count = 0
+    for name, content in iter_skills(skills_dir):
+        parts.append(f"### {name}\n\n{content}\n\n---\n\n")
+        count += 1
+    parts.append(f"<!-- Generated by Claude DevStudio Codex adapter. {count} skills. -->\n")
+    output.write_text("".join(parts), encoding="utf-8")
+    print(f"[OK] Generated {output} with {count} skills")
+    print("     Place AGENTS.md in your project root. Codex CLI will load it automatically.")
+
+
+def install_cursor(skills_dir: Path, output_dir: Path) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    count = 0
+    for name, content in iter_skills(skills_dir):
+        rule_file = output_dir / f"skill-{name}.md"
+        rule_file.write_text(
+            f"---\ndescription: Claude DevStudio skill: {name}\nalwaysApply: false\n---\n\n{content}",
+            encoding="utf-8",
+        )
+        count += 1
+    print(f"[OK] Generated {count} rule files in {output_dir}/")
+    print("     Cursor loads these automatically. Reference with @skill-<name>.")
+
+
+def install_aider(skills_dir: Path, output_dir: Path, write_config: bool = True) -> None:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    read_list = []
+    count = 0
+    for name, content in iter_skills(skills_dir):
+        out = output_dir / f"{name}.md"
+        out.write_text(f"# Skill: {name}\n\n{content}", encoding="utf-8")
+        read_list.append(str(out))
+        count += 1
+
+    if write_config:
+        config = Path(".aider.conf.yml")
+        lines = ["# Auto-generated by Claude DevStudio aider adapter", f"# Loads all {count} skills as read-only context.", "read:"]
+        lines += [f"  - {p}" for p in read_list]
+        config.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        print(f"[OK] Generated .aider.conf.yml — skills load automatically when you run aider")
+
+    print(f"[OK] Generated {count} skill files in {output_dir}/")
+    print("     Run: aider  (config auto-loads skills)")
+
+
+# ── Entry point ────────────────────────────────────────────────────────────────
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Claude DevStudio installer")
+    parser.add_argument("--target", default="claude",
+                        choices=["claude", "gemini", "codex", "cursor", "aider", "generic"],
+                        help="Target tool (default: claude)")
+    parser.add_argument("--output", default=None,
+                        help="Output file (generic/gemini/codex) or output dir (cursor/aider)")
+    args = parser.parse_args()
+
+    script_dir = Path(__file__).parent.absolute()
+    skills_dir = script_dir / "skills"
+
+    if not skills_dir.exists():
+        print(f"[ERROR] Skills directory not found: {skills_dir}")
+        sys.exit(1)
+
+    if args.target == "claude":
+        install_claude(skills_dir)
+
+    elif args.target == "generic":
+        out = Path(args.output or "system-prompt.md")
+        install_generic(skills_dir, out)
+
+    elif args.target == "gemini":
+        out = Path(args.output or "GEMINI.md")
+        install_gemini(skills_dir, out)
+
+    elif args.target == "codex":
+        out = Path(args.output or "AGENTS.md")
+        install_codex(skills_dir, out)
+
+    elif args.target == "cursor":
+        out_dir = Path(args.output or ".cursor/rules")
+        install_cursor(skills_dir, out_dir)
+
+    elif args.target == "aider":
+        out_dir = Path(args.output or "aider-skills")
+        install_aider(skills_dir, out_dir)
+
 
 if __name__ == "__main__":
     try:
         main()
+    except KeyboardInterrupt:
+        print("\n[CANCELLED]")
+        sys.exit(0)
     except Exception as e:
-        print(f"\n[ERROR] Installation failed: {e}")
+        print(f"\n[ERROR] {e}")
         sys.exit(1)

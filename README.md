@@ -29,7 +29,7 @@ Claude DevStudio is the most comprehensive development environment for Claude Co
 
 ## Installation
 
-### Quick Install
+### Claude Code (default)
 
 **Mac/Linux:**
 
@@ -43,7 +43,7 @@ curl -sSL https://raw.githubusercontent.com/manastalukdar/claude-devstudio/main/
 python install.py
 ```
 
-### Manual Install
+**Manual:**
 
 ```bash
 git clone https://github.com/manastalukdar/claude-devstudio.git
@@ -51,14 +51,62 @@ cd claude-devstudio
 python install.py
 ```
 
+### Other AI Tools & Models
+
+Claude DevStudio works with any AI coding tool or model. Clone the repo and run the installer with `--target`:
+
+| Target | Tool | Output |
+|---|---|---|
+| `claude` | Claude Code CLI (default) | `~/.claude/skills/` |
+| `gemini` | Gemini CLI | `GEMINI.md` in project root |
+| `codex` | Codex CLI / OpenCode | `AGENTS.md` in project root |
+| `cursor` | Cursor | `.cursor/rules/skill-*.md` |
+| `aider` | Aider | `aider-skills/` + `.aider.conf.yml` |
+| `generic` | Any tool or model API (Kimi K2, OpenCode, Ollama, etc.) | `system-prompt.md` |
+
+```bash
+git clone https://github.com/manastalukdar/claude-devstudio.git
+cd claude-devstudio
+
+# Gemini CLI
+python install.py --target gemini        # → GEMINI.md (place in project root)
+
+# Codex CLI / OpenCode
+python install.py --target codex         # → AGENTS.md (place in project root)
+
+# Cursor
+python install.py --target cursor        # → .cursor/rules/skill-*.md
+
+# Aider
+python install.py --target aider         # → aider-skills/ + .aider.conf.yml
+
+# Any tool/model (Kimi K2, Gemini API, Ollama, LM Studio, etc.)
+python install.py --target generic       # → system-prompt.md
+
+# Mac/Linux shell equivalents
+bash install.sh --target gemini
+bash install.sh --target generic
+```
+
+The skill **content** is model-agnostic and works with any capable LLM. The generated output includes a tool-name mapping table so the AI knows how to translate `Read`, `Bash`, `Grep`, etc. to its own capabilities.
+
+> **Note:** Hooks, agents, and commands (`.claude/`) are Claude Code-specific and not generated for other targets.
+
 ### Uninstall
 
 ```bash
-# Mac/Linux
+# Claude Code — Mac/Linux
 ./uninstall.sh
 
-# Windows/Cross-platform
+# Claude Code — Windows/Cross-platform
 python uninstall.py
+
+# Other targets — delete the generated file/directory
+rm GEMINI.md                              # gemini
+rm AGENTS.md                              # codex
+rm -rf .cursor/rules/skill-*.md           # cursor
+rm -rf aider-skills/ .aider.conf.yml      # aider
+rm system-prompt.md                       # generic
 ```
 
 ## Skills

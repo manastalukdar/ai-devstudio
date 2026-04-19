@@ -1,8 +1,40 @@
 #!/bin/bash
 # Claude DevStudio Installer for Mac/Linux
+#
+# Targets:
+#   --target claude   (default) Install to ~/.claude/skills/ for Claude Code CLI
+#   --target gemini   Generate GEMINI.md for Gemini CLI
+#   --target codex    Generate AGENTS.md for Codex CLI
+#   --target cursor   Generate .cursor/rules/ for Cursor
+#   --target aider    Generate aider-skills/ + .aider.conf.yml for Aider
+#   --target generic  Generate system-prompt.md for any AI tool or model API
 
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TARGET="claude"
+
+# Parse flags
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --target) TARGET="$2"; shift 2 ;;
+        *) echo "Unknown option: $1"; exit 1 ;;
+    esac
+done
+
+# Non-Claude targets delegate entirely to the adapter scripts
+if [[ "$TARGET" != "claude" ]]; then
+    adapter="$SCRIPT_DIR/adapters/${TARGET}.sh"
+    if [[ ! -f "$adapter" ]]; then
+        echo "[ERROR] Unknown target '$TARGET'. Valid targets: claude gemini codex cursor aider generic"
+        exit 1
+    fi
+    export SKILLS_DIR="$SCRIPT_DIR/skills"
+    bash "$adapter"
+    exit 0
+fi
+
+# ── Claude Code target ─────────────────────────────────────────────────────────
 SKILLS_DIR="$HOME/.claude/skills"
 MANIFEST_FILE="$SKILLS_DIR/.claude-devstudio-manifest"
 REPO_URL="https://raw.githubusercontent.com/manastalukdar/claude-devstudio/main/skills"
@@ -21,7 +53,7 @@ else
     mapfile -t SKILLS < <(echo "$API_RESPONSE" | grep '"name"' | sed 's/.*"name": "\(.*\)".*/\1/' | grep -v '^\[' | sort -u)
 fi
 
-if [ "${#SKILLS[@]}" -eq 0 ]; then
+if [[ "${#SKILLS[@]}" -eq 0 ]]; then
     echo "[ERROR] Failed to fetch skill list from GitHub. Check your network connection."
     echo "Tip: Try the Python installer instead: python3 install.py"
     exit 1
@@ -32,12 +64,12 @@ echo "Found ${#SKILLS[@]} skills."
 # Check for existing skills
 EXISTING=0
 for skill in "${SKILLS[@]}"; do
-    if [ -d "$SKILLS_DIR/$skill" ]; then
+    if [[ -d "$SKILLS_DIR/$skill" ]]; then
         ((EXISTING++)) || true
     fi
 done
 
-if [ "$EXISTING" -gt 0 ]; then
+if [[ "$EXISTING" -gt 0 ]]; then
     echo "[WARNING] Found $EXISTING existing skills in $SKILLS_DIR"
     read -p "Overwrite existing skills? (y/N): " -n 1 -r
     echo
@@ -67,5 +99,5 @@ printf '%s\n' "${SKILLS[@]}" > "$MANIFEST_FILE"
 
 echo ""
 echo "[SUCCESS] Installed $INSTALLED skills to $SKILLS_DIR"
-[ "$FAILED" -gt 0 ] && echo "[WARNING] $FAILED skills failed to download"
+[[ "$FAILED" -gt 0 ]] && echo "[WARNING] $FAILED skills failed to download"
 echo "Type / in Claude Code to see available skills"
