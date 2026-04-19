@@ -13,7 +13,7 @@ This document provides guidelines for AI assistants (particularly Claude Code) w
 
 ## Project Identity
 
-**Claude DevStudio** is a professional development environment that extends Claude Code CLI with 99 professional skills across 3 tiers for automated workflows, code quality analysis, and session management.
+**Claude DevStudio** is a professional development environment that extends Claude Code CLI with 100 professional skills across 3 tiers for automated workflows, code quality analysis, and session management.
 
 **Core Philosophy**: Time-saving automation with safety-first design and professional-grade code quality.
 
