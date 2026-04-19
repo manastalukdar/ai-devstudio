@@ -69,8 +69,8 @@ Open an issue with:
 ## Development Setup
 
 ```bash
-git clone https://github.com/manastalukdar/claude-devstudio
-cd claude-devstudio
+git clone https://github.com/manastalukdar/ai-devstudio
+cd ai-devstudio
 python install.py  # Test your changes
 ```
 

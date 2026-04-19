@@ -34,7 +34,7 @@ Claude DevStudio is the most comprehensive development environment for Claude Co
 **Mac/Linux:**
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/manastalukdar/claude-devstudio/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/manastalukdar/ai-devstudio/main/install.sh | bash
 ```
 
 **Windows/Cross-platform:**
@@ -46,8 +46,8 @@ python install.py
 **Manual:**
 
 ```bash
-git clone https://github.com/manastalukdar/claude-devstudio.git
-cd claude-devstudio
+git clone https://github.com/manastalukdar/ai-devstudio.git
+cd ai-devstudio
 python install.py
 ```
 
@@ -65,8 +65,8 @@ Claude DevStudio works with any AI coding tool or model. Clone the repo and run 
 | `generic` | Any tool or model API (Kimi K2, OpenCode, Ollama, etc.) | `system-prompt.md` |
 
 ```bash
-git clone https://github.com/manastalukdar/claude-devstudio.git
-cd claude-devstudio
+git clone https://github.com/manastalukdar/ai-devstudio.git
+cd ai-devstudio
 
 # Gemini CLI
 python install.py --target gemini        # → GEMINI.md (place in project root)

@@ -74,7 +74,7 @@ Detailed guidelines are in `.claude/rules/` (loaded automatically by Claude Code
 
 ```bash
 # Mac/Linux
-curl -sSL https://raw.githubusercontent.com/manastalukdar/claude-devstudio/main/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/manastalukdar/ai-devstudio/main/install.sh | bash
 
 # Cross-platform
 python install.py

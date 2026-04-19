@@ -48,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added mandatory plan creation before execution in complex commands
   - Improved error handling and recovery strategies
   - Better integration between related commands
-https://github.com/manastalukdar/claude-devstudio
+https://github.com/manastalukdar/ai-devstudio
 - **Documentation:**
   - Added continuous development notice highlighting active maintenance
   - Enhanced architecture description with visual flow diagrams
