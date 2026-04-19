@@ -1,12 +1,12 @@
 ---
 name: docs-sync
-description: Sync documentation files with code changes — updates CLAUDE.md, AGENTS.md, README.md, and docs/**/*.md to reflect what actually changed in the codebase. Run after adding features, refactoring, or changing project structure.
+description: Sync documentation files with code changes — detects what changed, finds affected docs, and applies surgical updates so docs never drift from code. Works in any repo.
 disable-model-invocation: false
 ---
 
 # Documentation Sync
 
-I'll detect what changed in the codebase and surgically update every affected documentation file — CLAUDE.md, AGENTS.md, README.md, and any files under `docs/` or `documentation/` — so docs never drift from code.
+I'll detect what changed in the codebase and surgically update every affected documentation file — README, CHANGELOG, API docs, architecture docs, and any files under `docs/` or `documentation/` — so docs never drift from code.
 
 ## Token Optimization
 
@@ -14,9 +14,7 @@ I'll detect what changed in the codebase and surgically update every affected do
 
 **Patterns used**: Grep-before-Read, git diff scope, early exit, progressive disclosure
 
-**Early exit**: If no relevant code files changed since last doc update (checked via `git diff`), report "docs are current" and stop immediately.
-
-**Caching**: Skips re-reading doc files whose sections haven't changed. Uses `git diff` output to scope work to only affected areas.
+**Early exit**: If no code files changed since the last doc update, report "docs are current" and stop immediately.
 
 ## Step 1 — Detect Changed Files
 
@@ -40,147 +38,147 @@ echo "$CHANGED"
 
 If no files changed, report "Nothing to sync" and stop.
 
-## Step 2 — Classify Changes
+## Step 2 — Discover Documentation Files
 
-Map each changed file to the documentation areas it may affect:
+Scan the repo for doc files without reading them:
 
-| Changed file pattern | Potentially affected docs |
+```bash
+# Find all markdown/rst/txt documentation files
+find . -type f \( -name "*.md" -o -name "*.rst" -o -name "*.txt" \) \
+  -not -path "*/node_modules/*" \
+  -not -path "*/.git/*" \
+  -not -path "*/vendor/*" \
+  | sort
+
+# Identify the main docs: README, CHANGELOG, API docs, architecture docs
+ls README* CHANGELOG* CONTRIBUTING* LICENSE* 2>/dev/null
+ls docs/ documentation/ 2>/dev/null
+```
+
+## Step 3 — Map Changed Code to Affected Docs
+
+For each changed code file, find which doc files reference it by name, module, or path:
+
+```bash
+for file in $CHANGED; do
+    # Extract meaningful name tokens (filename without extension, parent directory)
+    name=$(basename "$file" | sed 's/\.[^.]*$//')
+    dir=$(dirname "$file" | xargs basename)
+
+    # Search for references in doc files
+    grep -rl "$name\|$dir" \
+      $(find . -name "*.md" -not -path "*/.git/*" -not -path "*/node_modules/*") \
+      2>/dev/null
+done | sort -u
+```
+
+General mapping rules (adapt to what you find in the repo):
+
+| Type of change | Likely affected docs |
 |---|---|
-| `skills/*/SKILL.md` (new) | README.md skill listing, CLAUDE.md skill count |
-| `skills/*/SKILL.md` (modified) | README.md description for that skill |
-| `skills/*/SKILL.md` (deleted) | README.md, CLAUDE.md skill count |
-| `.claude/agents/*.md` | AGENTS.md agents section, CLAUDE.md |
-| `.claude/commands/*.md` | AGENTS.md commands section, CLAUDE.md |
-| `.claude/hooks/**` | AGENTS.md hooks section, README.md hooks section |
-| `.claude/rules/*.md` | CLAUDE.md rules table |
-| `adapters/*.sh` | README.md installation section |
-| `install.sh` / `install.py` / `uninstall.*` | README.md installation section |
-| `docs/**/*.md` | Nothing (these ARE docs — check for internal cross-refs) |
-| `*.py` / `*.ts` / `*.js` / `*.go` / `*.rs` | Relevant `docs/` files if they describe that code |
+| New public function / class / module | README usage section, API reference, relevant `docs/` page |
+| Renamed / removed symbol | Any doc that mentions the old name |
+| New CLI flag or config option | README, config reference docs |
+| Dependency added / removed | README installation section, CONTRIBUTING setup guide |
+| New file in a documented directory | README file listing or architecture doc |
+| Bug fix with user-visible behavior change | CHANGELOG, README caveats |
+| Breaking change | CHANGELOG, README migration section, CONTRIBUTING |
 
-Use Grep to check which doc files already reference the changed items:
+## Step 4 — Read Only Affected Sections
+
+Do NOT read entire doc files. Use Grep to find the exact lines that need updating:
 
 ```bash
-# For each changed skill/agent/command, check if it's referenced in docs
-for item in $CHANGED; do
-    basename=$(basename "$item" .md | sed 's/SKILL//')
-    grep -rl "$basename" README.md CLAUDE.md AGENTS.md docs/ 2>/dev/null
-done
+# Find the section that mentions the changed item
+grep -n "<item-name>" <doc-file> | head -20
+
+# Find version or count references that may need updating
+grep -n "v[0-9]\+\.[0-9]\+\|[0-9]\+ feature\|[0-9]\+ command" README.md
+
+# Find installation or setup sections
+grep -n "^## Install\|^## Setup\|^## Getting Started" README.md
 ```
 
-## Step 3 — Read Only Affected Sections
+Read only the relevant line ranges (use offset + limit).
 
-Do NOT read entire doc files. Use Grep to locate the exact line ranges that need updating:
+## Step 5 — Determine Required Updates
 
-```bash
-# Find skill listing section in README
-grep -n "skill\|Skill" README.md | head -20
+For each affected doc, identify the minimal change:
 
-# Find skill count references
-grep -n "[0-9]\+ skill\|skill.*[0-9]\+" CLAUDE.md AGENTS.md README.md
+**New public API (function, class, endpoint):**
+- Add one entry to the relevant section in README or API docs
+- Add a CHANGELOG entry if the project uses one
 
-# Find agent/command tables
-grep -n "^| \`\|^| Agent\|^| Command" AGENTS.md README.md
-```
+**Renamed or removed:**
+- Update every occurrence of the old name
+- Add a deprecation/migration note if the project has a migration guide
 
-Read only those specific sections using offset and limit to minimize token usage.
+**New CLI flag or config key:**
+- Add one row to the relevant options table
+- Update any example commands that show related flags
 
-## Step 4 — Determine Required Updates
+**Dependency change:**
+- Update installation commands in README if the install step changed
+- Update minimum version requirements if they changed
 
-For each affected doc, identify the minimal change needed:
+**Breaking change:**
+- Add a CHANGELOG entry under the correct version heading
+- Add a migration note in README or a dedicated migration doc
 
-**New skill added:**
-- README.md: Add one line to the correct tier section's bash block
-- CLAUDE.md: Increment skill count (e.g., `99` → `100`)
-- AGENTS.md: Update "99 professional skills" references if present
-
-**Skill modified (description changed):**
-- README.md: Update the one-line description in the skill listing
-- CLAUDE.md: Update description if it appears in the current state summary
-
-**Agent added/modified:**
-- AGENTS.md: Update or add row in the agents table
-- CLAUDE.md: Update agents list if it appears in the architecture section
-- README.md: Update the agents table in Project Infrastructure section
-
-**Command added/modified:**
-- AGENTS.md: Update commands section
-- README.md: Update commands table in Project Infrastructure section
-- CLAUDE.md: Update commands list if referenced
-
-**Hook changed:**
-- README.md: Update hooks section if behavior changed
-- AGENTS.md: Update hooks system section
-
-**Adapter added/modified:**
-- README.md: Update the targets table in the installation section
-
-**Source code changed (`.py`, `.ts`, etc.):**
-- Search `docs/` for files that describe the changed module
-- Read only those files and update the relevant sections
-
-## Step 5 — Apply Surgical Updates
+## Step 6 — Apply Surgical Updates
 
 Use the Edit tool for each change — never rewrite an entire file. Make the smallest edit that brings the doc into sync.
 
-**Naming and count updates:**
-
-If a skill count changed, find all occurrences and update each:
-
 ```bash
-grep -n "[0-9]\+ skill\|[0-9]\+ professional" CLAUDE.md AGENTS.md README.md
+# Before editing, verify the exact text to replace
+grep -n "<old-text>" <doc-file>
 ```
 
-Edit each occurrence with the correct count.
+Then apply each edit with the Edit tool, preserving surrounding formatting (table alignment, list indentation, heading levels).
 
-**Table row additions/updates:**
+## Step 7 — Verify Consistency
 
-Insert or replace exactly one row in the relevant markdown table. Preserve table alignment.
-
-**Skill listing additions:**
-
-Insert exactly one line in the correct section's bash block in README.md. Match surrounding indentation and comment style.
-
-## Step 6 — Verify Cross-References
-
-After all edits, do a quick consistency check:
+After all edits, do a quick sanity check:
 
 ```bash
-# All skill counts should agree
-grep -h "[0-9]\+ skill" CLAUDE.md AGENTS.md README.md | sort -u
+# Check that renamed items no longer appear under old names
+grep -r "<old-name>" docs/ README.md 2>/dev/null
 
-# No broken links to docs files
-grep -roh '\[.*\](\(docs/[^)]*\))' README.md CLAUDE.md AGENTS.md | \
-  sed 's/.*(\(.*\))/\1/' | while read f; do
-    [[ -f "$f" ]] || echo "BROKEN: $f"
-  done
+# Check for broken relative links
+grep -oh '\[.*\]([^)#]*)' README.md docs/**/*.md 2>/dev/null \
+  | sed 's/.*(\(.*\))/\1/' \
+  | while read f; do
+      [[ -f "$f" ]] || echo "BROKEN LINK: $f"
+    done
 ```
 
-If counts disagree or links are broken, fix them before reporting done.
+Fix any remaining references before reporting done.
 
-## Step 7 — Report
-
-Summarize changes made:
+## Step 8 — Report
 
 ```
 docs-sync complete
 
+Scope: last commit (3 files changed)
+
 Updated:
-  README.md          — added docs-sync to Tier 2 skill listing
-  CLAUDE.md          — skill count 99 → 100
-  AGENTS.md          — no changes needed (count not referenced)
+  README.md          — added myFunction to API reference section
+  docs/api.md        — added parameter description for --verbose flag
+  CHANGELOG.md       — added entry under [Unreleased]
 
 No changes needed:
-  docs/skills/       — no matching docs for changed files
+  docs/architecture.md — no references to changed files
+  CONTRIBUTING.md      — setup instructions unchanged
 
-Skipped (no relevant changes):
-  .claude/agents/    — agent files unchanged
+Skipped (doc-only changes, no code drift):
+  docs/guides/tutorial.md
 ```
 
 ## Edge Cases
 
-- **No git repo**: Fall back to scanning for doc files and prompting the user to describe what changed
-- **Ambiguous skill tier**: Ask the user which tier before updating README.md
-- **Doc file missing**: Note it in the report but do not create it — use `/docs` for new doc creation
-- **Conflicting counts**: Report the discrepancy; ask the user which count is correct before writing
-- **Large diffs (50+ files)**: Summarize by category rather than processing file-by-file; ask user to confirm scope before editing
+- **No git repo**: Prompt the user to describe what changed; then scan all doc files for likely affected sections
+- **No existing docs**: Note which doc files are missing; suggest creating them with `/docs` but do not create them automatically
+- **Ambiguous section**: If multiple doc sections could apply, list them and ask the user to confirm before editing
+- **Large diffs (50+ files)**: Summarize by change category; ask the user to confirm scope before editing
+- **Generated docs** (e.g., from JSDoc, Sphinx, rustdoc): Note that they need to be regenerated rather than hand-edited; skip them and report
+- **CHANGELOG format varies**: Detect the format (Keep a Changelog, simple bullet list, etc.) from existing entries before adding new ones
