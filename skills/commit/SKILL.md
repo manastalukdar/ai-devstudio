@@ -6,6 +6,19 @@ disable-model-invocation: true
 
 # Smart Git Commit
 
+## Absolute Credential Rules
+
+**NEVER violate these — no exceptions:**
+
+- **NEVER run `git config user.name` or `git config user.email`** — do not touch git identity settings
+- **NEVER use `--author` to inject any name or email**
+- **NEVER add a `Co-Authored-By:` trailer to any commit message**
+- **NEVER add `Co-Authored-By: Claude`, `Co-Authored-By: Claude Sonnet`, or any variant with `noreply@anthropic.com`**
+- **NEVER include "Generated with Claude Code", "AI-generated", or any AI attribution in the commit message or body**
+- **NEVER modify `.git/config` or any git credential file**
+
+The commit must use **only the developer's own git credentials** as already configured in their environment. The commit author and committer must be the human developer — not an AI tool.
+
 I'll analyze your changes and create a meaningful commit message.
 
 **Token Optimization:**
@@ -138,14 +151,7 @@ EOF
 
 The commit message will be concise, meaningful, and follow your project's conventions detected from recent commits and cached for efficiency.
 
-**Important**: I will NEVER:
-- Add "Co-authored-by" or any Claude signatures
-- Include "Generated with Claude Code" or similar messages
-- Modify git config or user credentials
-- Add any AI/assistant attribution to the commit
-- Use emojis in commits, PRs, or git-related content
-
-The commit will use only your existing git user configuration, maintaining full ownership and authenticity of your commits.
+The commit will use only your existing git user configuration. No AI attribution. No emojis.
 
 ## Token Optimization
 
