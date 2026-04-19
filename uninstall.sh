@@ -1,13 +1,13 @@
 #!/bin/bash
-# Claude DevStudio Uninstaller for Mac/Linux
+# AI DevStudio Uninstaller for Mac/Linux
 
 set -e
 
-echo "Claude DevStudio Uninstaller"
+echo "AI DevStudio Uninstaller"
 echo "============================"
 
 SKILLS_DIR="$HOME/.claude/skills"
-MANIFEST_FILE="$SKILLS_DIR/.claude-devstudio-manifest"
+MANIFEST_FILE="$SKILLS_DIR/.ai-devstudio-manifest"
 COMMANDS_DIR="$HOME/.claude/commands"
 
 # Load skill list from manifest (written by install.sh)
@@ -86,19 +86,19 @@ if [ -d "$COMMANDS_DIR" ]; then
 fi
 
 if [ $INSTALLED_SKILLS -eq 0 ] && [ $INSTALLED_LEGACY -eq 0 ]; then
-    echo "[INFO] No Claude DevStudio skills or commands found."
+    echo "[INFO] No AI DevStudio skills or commands found."
     exit 0
 fi
 
 # Show what will be removed
 if [ $INSTALLED_SKILLS -gt 0 ]; then
-    echo "[FOUND] $INSTALLED_SKILLS Claude DevStudio skills (new format)"
+    echo "[FOUND] $INSTALLED_SKILLS AI DevStudio skills (new format)"
 fi
 if [ $INSTALLED_LEGACY -gt 0 ]; then
     echo "[FOUND] $INSTALLED_LEGACY legacy command files (old format)"
 fi
 
-read -p "Remove all Claude DevStudio skills and commands? (y/N): " -n 1 -r
+read -p "Remove all AI DevStudio skills and commands? (y/N): " -n 1 -r
 echo
 
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
@@ -148,4 +148,4 @@ fi
 
 TOTAL_REMOVED=$((REMOVED_SKILLS + REMOVED_LEGACY))
 echo "[SUCCESS] Uninstalled $REMOVED_SKILLS skills and $REMOVED_LEGACY legacy commands ($TOTAL_REMOVED total)"
-echo "Thanks for trying Claude DevStudio!"
+echo "Thanks for trying AI DevStudio!"

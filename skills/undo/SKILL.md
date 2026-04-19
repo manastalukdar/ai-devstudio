@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Undo Last Operation
 
-I'll help you rollback the last destructive operation performed by Claude DevStudio commands.
+I'll help you rollback the last destructive operation performed by AI DevStudio commands.
 
 ## Token Optimization Strategy
 

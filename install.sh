@@ -1,5 +1,5 @@
 #!/bin/bash
-# Claude DevStudio Installer for Mac/Linux
+# AI DevStudio Installer for Mac/Linux
 #
 # Targets:
 #   --target claude   (default) Install to ~/.claude/skills/ for Claude Code CLI
@@ -36,7 +36,7 @@ fi
 
 # ── Claude Code target ─────────────────────────────────────────────────────────
 SKILLS_DIR="$HOME/.claude/skills"
-MANIFEST_FILE="$SKILLS_DIR/.claude-devstudio-manifest"
+MANIFEST_FILE="$SKILLS_DIR/.ai-devstudio-manifest"
 REPO_URL="https://raw.githubusercontent.com/manastalukdar/ai-devstudio/main/skills"
 API_URL="https://api.github.com/repos/manastalukdar/ai-devstudio/contents/skills"
 

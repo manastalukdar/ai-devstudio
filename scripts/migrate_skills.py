@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 
 # Define the base directories
-BASE_DIR = Path("/media/manas/Study/dev/_my-projects/manastalukdar/claude-devstudio")
+BASE_DIR = Path("/media/manas/Study/dev/_my-projects/manastalukdar/ai-devstudio")
 COMMANDS_DIR = BASE_DIR / "commands"
 SKILLS_DIR = BASE_DIR / "skills"
 

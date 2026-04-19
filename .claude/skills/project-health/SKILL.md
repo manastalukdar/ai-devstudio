@@ -1,13 +1,13 @@
 ---
 name: project-health
-description: Internal health check skill for Claude DevStudio project. Checks skill count consistency across docs, detects stale sessions, and identifies cache files to clean. Not user-facing.
+description: Internal health check skill for AI DevStudio project. Checks skill count consistency across docs, detects stale sessions, and identifies cache files to clean. Not user-facing.
 user-invocable: false
 disable-model-invocation: false
 ---
 
 # Project Health Check Skill
 
-Internal skill used by the `session-daily` command. Checks the health of the Claude DevStudio project itself.
+Internal skill used by the `session-daily` command. Checks the health of the AI DevStudio project itself.
 
 ## Checks
 

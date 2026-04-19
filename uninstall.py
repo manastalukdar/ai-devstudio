@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-# Claude DevStudio Uninstaller
+# AI DevStudio Uninstaller
 
 """
-Claude DevStudio Uninstaller
+AI DevStudio Uninstaller
 Removes skill directories from ~/.claude/skills/ and legacy command files from ~/.claude/commands/
 """
 
@@ -53,7 +53,7 @@ def main():
     legacy_commands = [f"{skill}.md" for skill in skills]
     legacy_commands.extend(["cleanup-types.md", "context-cache.md"])  # Old removed commands
 
-    print("Claude DevStudio Uninstaller")
+    print("AI DevStudio Uninstaller")
     print("=" * 40)
 
     # Check for skills (new format)
@@ -71,16 +71,16 @@ def main():
                 installed_legacy += 1
 
     if installed_skills == 0 and installed_legacy == 0:
-        print("[INFO] No Claude DevStudio skills or commands found.")
+        print("[INFO] No AI DevStudio skills or commands found.")
         return
 
     # Show what will be removed
     if installed_skills > 0:
-        print(f"[FOUND] {installed_skills} Claude DevStudio skills (new format)")
+        print(f"[FOUND] {installed_skills} AI DevStudio skills (new format)")
     if installed_legacy > 0:
         print(f"[FOUND] {installed_legacy} legacy command files (old format)")
 
-    response = input("\nRemove all Claude DevStudio skills and commands? (y/N): ")
+    response = input("\nRemove all AI DevStudio skills and commands? (y/N): ")
 
     if response.lower() != 'y':
         print("[CANCELLED] Uninstall cancelled.")
@@ -128,7 +128,7 @@ def main():
 
     total_removed = removed_skills + removed_legacy
     print(f"\n[SUCCESS] Uninstalled {removed_skills} skills and {removed_legacy} legacy commands ({total_removed} total)")
-    print("Thanks for trying Claude DevStudio!")
+    print("Thanks for trying AI DevStudio!")
 
 if __name__ == "__main__":
     try:

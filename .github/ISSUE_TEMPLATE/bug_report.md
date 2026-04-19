@@ -27,7 +27,7 @@ If applicable, add screenshots to help explain your problem.
 
  - OS: [e.g. macOS 14.0]
  - Python version: [e.g. 3.11]
- - Claude DevStudio version: [e.g. 1.6.0]
+ - AI DevStudio version: [e.g. 1.6.0]
 
 **Additional context**
 Add any other context about the problem here.

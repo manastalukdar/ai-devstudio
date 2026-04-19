@@ -100,7 +100,7 @@ Implemented by the `/parallel-agents` skill.
 
 ```
 .claude/skills/
-  project-health/SKILL.md    — health check for claude-devstudio itself
+  project-health/SKILL.md    — health check for ai-devstudio itself
   skill-validator/SKILL.md   — validates new skills against project standards
 ```
 

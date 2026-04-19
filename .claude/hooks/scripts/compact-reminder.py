@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Compact-aware SessionStart hook for Claude DevStudio.
+Compact-aware SessionStart hook for AI DevStudio.
 
 Fires after a context compaction event (SessionStart with trigger=compact).
 Outputs a structured codebase reminder so Claude restores critical context
@@ -10,9 +10,9 @@ Claude Code injects the stdout of this script as a system message.
 """
 
 REMINDER = """
-## Claude DevStudio — Post-Compaction Context Restore
+## AI DevStudio — Post-Compaction Context Restore
 
-You are working in the **Claude DevStudio** project. Here is the critical context
+You are working in the **AI DevStudio** project. Here is the critical context
 you need to continue work after compaction:
 
 ### Project Identity

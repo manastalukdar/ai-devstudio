@@ -70,7 +70,7 @@ mkdir .claude/sessions/templates
 ```bash
 # Generate standard README from template (no analysis)
 cat > .claude/sessions/README.md << 'EOF'
-# Claude DevStudio Session Management
+# AI DevStudio Session Management
 [Standard template content...]
 EOF
 ```

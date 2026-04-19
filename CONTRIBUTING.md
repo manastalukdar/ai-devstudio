@@ -1,6 +1,6 @@
-# Contributing to Claude DevStudio
+# Contributing to AI DevStudio
 
-Thanks for your interest in improving Claude DevStudio! This development studio helps developers save 10-15 hours per week with professional automation.
+Thanks for your interest in improving AI DevStudio! This development studio helps developers save 10-15 hours per week with professional automation.
 
 ## Branch Strategy
 
@@ -212,7 +212,7 @@ When creating issues, please use these templates:
 
 ## Continuous Improvement
 
-Claude DevStudio is actively maintained. We:
+AI DevStudio is actively maintained. We:
 
 - Test skills thoroughly before release
 - Refine based on real usage patterns

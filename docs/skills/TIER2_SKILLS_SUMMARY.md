@@ -138,7 +138,7 @@ Skills are designed to work together:
 ## File Structure
 
 ```
-claude-devstudio/
+ai-devstudio/
 ├── skills/
 │   ├── playwright-automate/
 │   │   └── SKILL.md          # Browser automation (760 lines)
@@ -204,7 +204,7 @@ All 6 Tier 2 skills have been successfully implemented following the SKILLS_EXPA
 - Follows safety-first design
 - Contains no AI attribution
 
-These skills significantly enhance Claude DevStudio's capabilities in MCP integration and security analysis, bringing the total skill count from 46 to 52 skills.
+These skills significantly enhance AI DevStudio's capabilities in MCP integration and security analysis, bringing the total skill count from 46 to 52 skills.
 
 ---
 

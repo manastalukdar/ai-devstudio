@@ -34,7 +34,7 @@ while IFS= read -r -d '' skill_dir; do
     out="$OUTPUT_DIR/skill-${skill_name}.md"
     {
         printf '---\n'
-        printf 'description: Claude DevStudio skill: %s\n' "$skill_name"
+        printf 'description: AI DevStudio skill: %s\n' "$skill_name"
         printf 'alwaysApply: false\n'
         printf '---\n\n'
         strip_frontmatter "$skill_file"

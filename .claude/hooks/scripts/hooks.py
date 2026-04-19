@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Claude DevStudio Hooks Handler
+AI DevStudio Hooks Handler
 
 Handles all 19 Claude Code hook events with audio notifications and JSONL logging.
 Inspired by shanraisshan/claude-code-best-practice.
@@ -159,7 +159,7 @@ def resolve_sound(event_name: str, payload: dict) -> str | None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Claude DevStudio hook handler")
+    parser = argparse.ArgumentParser(description="AI DevStudio hook handler")
     parser.add_argument("--agent", default=None, help="Agent name for agent-specific handling")
     args = parser.parse_args()
 

@@ -1,13 +1,13 @@
 ---
 name: skill-validator
-description: Internal skill that validates a new or modified Claude DevStudio skill against project standards. Checks YAML frontmatter, token optimization section, line limit, and naming conventions. Used by the code-reviewer agent during PR review.
+description: Internal skill that validates a new or modified AI DevStudio skill against project standards. Checks YAML frontmatter, token optimization section, line limit, and naming conventions. Used by the code-reviewer agent during PR review.
 user-invocable: false
 disable-model-invocation: false
 ---
 
 # Skill Validator Skill
 
-Internal skill used by the `code-reviewer` agent when reviewing skill contributions. Validates a skill file against Claude DevStudio standards.
+Internal skill used by the `code-reviewer` agent when reviewing skill contributions. Validates a skill file against AI DevStudio standards.
 
 ## Usage
 

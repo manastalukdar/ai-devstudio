@@ -1,7 +1,7 @@
 # Claude MD Auditor — Institutional Memory
 
 This file is loaded into the agent's context on every invocation. It records
-recurring drift patterns and past corrections for the Claude DevStudio project.
+recurring drift patterns and past corrections for the AI DevStudio project.
 Append new entries after each audit run.
 
 ## Known Drift Patterns

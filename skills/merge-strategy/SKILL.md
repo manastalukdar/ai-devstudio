@@ -790,4 +790,4 @@ I'll help you choose and execute the right merge strategy for every situation, s
 - Based on obra/superpowers git workflow patterns
 - Team workflow patterns from industry conventions
 - Conflict resolution strategies from distributed development experience
-- Integration with existing git skills in Claude DevStudio
+- Integration with existing git skills in AI DevStudio

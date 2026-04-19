@@ -1,7 +1,7 @@
 # Quality Fixer — Institutional Memory
 
 This file is loaded into the agent's context on every invocation. It records
-recurring quality issues and fix patterns for Claude DevStudio.
+recurring quality issues and fix patterns for AI DevStudio.
 
 ## Project Quality Stack
 

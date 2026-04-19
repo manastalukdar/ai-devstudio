@@ -1,5 +1,5 @@
 #!/bin/bash
-# Shared utilities for Claude DevStudio adapters
+# Shared utilities for AI DevStudio adapters
 
 # Strip YAML frontmatter (content between first and second --- delimiters)
 strip_frontmatter() {

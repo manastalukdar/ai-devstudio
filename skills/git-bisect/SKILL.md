@@ -760,4 +760,4 @@ I'll help you find the exact commit that introduced any bug through intelligent 
 - Inspired by obra/superpowers debugging methodology
 - Automated testing patterns from CI/CD best practices
 - Binary search algorithms for bug hunting
-- Integration with Claude DevStudio debugging ecosystem
+- Integration with AI DevStudio debugging ecosystem

@@ -76,7 +76,7 @@
 ## File Locations
 
 ```
-/media/manas/Study/dev/_my-projects/manastalukdar/claude-devstudio/
+/media/manas/Study/dev/_my-projects/manastalukdar/ai-devstudio/
 ├── commands/              # Original files (preserved)
 ├── skills/                # New structure
 │   ├── cleanproject/

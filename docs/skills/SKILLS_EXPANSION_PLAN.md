@@ -5,18 +5,18 @@
  https://opensource.org/licenses/MIT
 -->
 
-# Claude DevStudio - Skills Expansion Plan
+# AI DevStudio - Skills Expansion Plan
 
 ## Executive Summary
 
-This plan outlines the expansion of Claude DevStudio from 30 to 75+ professional skills, representing a 150% increase in capabilities. The expansion is based on comprehensive research of popular GitHub repositories, community resources, and emerging trends in Claude Code automation for 2026.
+This plan outlines the expansion of AI DevStudio from 30 to 75+ professional skills, representing a 150% increase in capabilities. The expansion is based on comprehensive research of popular GitHub repositories, community resources, and emerging trends in Claude Code automation for 2026.
 
 **Key Objectives:**
 - Add 45 new skills across 13 specialized categories
 - Maintain existing architecture and safety-first design principles
 - Implement in three phased releases (Tier 1, 2, 3)
 - Increase developer time savings from 4-5 hours to 8-10 hours per week
-- Position Claude DevStudio as the most comprehensive skills collection available
+- Position AI DevStudio as the most comprehensive skills collection available
 
 **Research Foundation:**
 - **obra/superpowers** (27.9k ⭐): TDD, debugging, collaboration patterns
@@ -431,7 +431,7 @@ Includes skills marked as Tier 3 priority:
 ### New Directory Organization
 
 ```
-claude-devstudio/
+ai-devstudio/
 ├── skills/                           # Expanded to 75+ skills
 │   ├── [existing 30 skills]/
 │   │
@@ -729,10 +729,10 @@ Update project context file:
 
 ```python
 #!/usr/bin/env python3
-# Claude DevStudio Installer v2.0
+# AI DevStudio Installer v2.0
 
 """
-Claude DevStudio Installer
+AI DevStudio Installer
 Installs 75+ professional skills to ~/.claude/skills/
 Supports tier-based installation, skill categories, and custom selections
 """
@@ -776,7 +776,7 @@ def install_skills(skills: List[str], dest: Path) -> int:
 
 def interactive_install():
     """Interactive skill selection"""
-    print("Claude DevStudio Installer v2.0")
+    print("AI DevStudio Installer v2.0")
     print("=" * 50)
     print("\nInstallation Options:")
     print("1. Install ALL skills (75+ skills)")
@@ -835,11 +835,11 @@ For users with existing 30 skills:
 
 **GitHub Release Notes Template:**
 ```markdown
-# Claude DevStudio v2.0 - Massive Expansion
+# AI DevStudio v2.0 - Massive Expansion
 
 ## 🚀 45 New Skills Added!
 
-We've expanded Claude DevStudio from 30 to 75+ skills based on community research and 2026 trends.
+We've expanded AI DevStudio from 30 to 75+ skills based on community research and 2026 trends.
 
 ### What's New
 
@@ -1124,7 +1124,7 @@ None! All existing skills remain unchanged.
 
 ## Conclusion
 
-This expansion plan transforms Claude DevStudio from a comprehensive 30-skill collection into an industry-leading 75+ skill powerhouse. By carefully phasing implementation across three tiers and maintaining our safety-first, conversational design philosophy, we'll deliver maximum value to developers while ensuring quality and compatibility.
+This expansion plan transforms AI DevStudio from a comprehensive 30-skill collection into an industry-leading 75+ skill powerhouse. By carefully phasing implementation across three tiers and maintaining our safety-first, conversational design philosophy, we'll deliver maximum value to developers while ensuring quality and compatibility.
 
 **Key Outcomes:**
 - ✅ 150% increase in skill count (30 → 75+)
@@ -1141,7 +1141,7 @@ This expansion plan transforms Claude DevStudio from a comprehensive 30-skill co
 4. Begin Tier 1 implementation (Week 1-2)
 5. Establish community feedback channels
 
-This plan positions Claude DevStudio as the definitive skills collection for Claude Code CLI, combining the best practices from obra/superpowers, official Anthropic skills, and emerging 2026 trends into one comprehensive, production-ready package.
+This plan positions AI DevStudio as the definitive skills collection for Claude Code CLI, combining the best practices from obra/superpowers, official Anthropic skills, and emerging 2026 trends into one comprehensive, production-ready package.
 
 ---
 
@@ -1160,5 +1160,5 @@ This plan positions Claude DevStudio as the definitive skills collection for Cla
 
 **Document Version:** 1.0
 **Date:** 2026-01-25
-**Author:** Claude DevStudio Team
+**Author:** AI DevStudio Team
 **Status:** Proposed - Awaiting Approval

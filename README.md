@@ -1,6 +1,6 @@
-# Claude DevStudio
+# AI DevStudio
 
-## What is `Claude DevStudio`?
+## What is `AI DevStudio`?
 
 Professional development studio for Claude Code CLI with 99 enterprise-grade skills that save 10-15 hours per week on repetitive development tasks.
 
@@ -11,11 +11,11 @@ Professional development studio for Claude Code CLI with 99 enterprise-grade ski
 🤪 "Please add a button" → Complete UI framework rewrite  
 😭 Every conversation → "Act like a senior engineer who doesn't overengineer"
 
-🚧 **Active Development Notice**: Claude DevStudio is continuously evolving based on real-world usage. We thoroughly test each skill and refine them as we discover gaps and opportunities. This ensures you're always getting battle-tested, production-ready tools that solve actual developer problems.
+🚧 **Active Development Notice**: AI DevStudio is continuously evolving based on real-world usage. We thoroughly test each skill and refine them as we discover gaps and opportunities. This ensures you're always getting battle-tested, production-ready tools that solve actual developer problems.
 
-**📢 New Claude Skills Format**: Claude DevStudio has been updated to use the official Claude Skills format with proper YAML frontmatter and directory structure. Each skill now resides in its own directory (`skills/skill-name/SKILL.md`) following the [Agent Skills](https://agentskills.io) open standard.
+**📢 New Claude Skills Format**: AI DevStudio has been updated to use the official Claude Skills format with proper YAML frontmatter and directory structure. Each skill now resides in its own directory (`skills/skill-name/SKILL.md`) following the [Agent Skills](https://agentskills.io) open standard.
 
-Claude DevStudio is the most comprehensive development environment for Claude Code CLI, featuring 100 professional skills across 4 tiers (Tier 1: 16 essentials, Tier 2: 38 advanced, Tier 3: 16 power-user, Core: 30 foundation). This intelligent development studio extends Claude with enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging - leveraging Claude's contextual understanding while delivering structured, predictable outcomes optimized for Opus 4 and Sonnet 4 models.
+AI DevStudio is the most comprehensive development environment for Claude Code CLI, featuring 100 professional skills across 4 tiers (Tier 1: 16 essentials, Tier 2: 38 advanced, Tier 3: 16 power-user, Core: 30 foundation). This intelligent development studio extends Claude with enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging - leveraging Claude's contextual understanding while delivering structured, predictable outcomes optimized for Opus 4 and Sonnet 4 models.
 
 ## Quick Links
 
@@ -53,7 +53,7 @@ python install.py
 
 ### Other AI Tools & Models
 
-Claude DevStudio works with any AI coding tool or model. Clone the repo and run the installer with `--target`:
+AI DevStudio works with any AI coding tool or model. Clone the repo and run the installer with `--target`:
 
 | Target | Tool | Output |
 |---|---|---|
@@ -262,7 +262,7 @@ Professional development session tracking system:
 
 ## Project Infrastructure
 
-Beyond skills, Claude DevStudio ships a complete project-level infrastructure that wires up commands, agents, hooks, MCP servers, and auto-loaded rules.
+Beyond skills, AI DevStudio ships a complete project-level infrastructure that wires up commands, agents, hooks, MCP servers, and auto-loaded rules.
 
 ### Commands
 
@@ -302,7 +302,7 @@ Agents use a **persistent memory pattern**: each agent has a `.claude/agent-memo
 
 ### Hooks
 
-Claude DevStudio registers handlers for all 19 Claude Code hook events via `.claude/hooks/scripts/hooks.py`. Hooks fire automatically — no user action required.
+AI DevStudio registers handlers for all 19 Claude Code hook events via `.claude/hooks/scripts/hooks.py`. Hooks fire automatically — no user action required.
 
 **What hooks do:**
 
@@ -382,7 +382,7 @@ src/
 
 ### High-Level Architecture
 
-Claude DevStudio transforms Claude Code CLI into an intelligent development assistant through a three-tier Command → Agent → Skill architecture:
+AI DevStudio transforms Claude Code CLI into an intelligent development assistant through a three-tier Command → Agent → Skill architecture:
 
 ```plaintext
 Developer
@@ -555,7 +555,7 @@ Custom skills appear with a `(user)` tag in Claude Code CLI to distinguish them 
 
 ## Performance Metrics
 
-| Task                | Manual Time | With Claude DevStudio | Time Saved |
+| Task                | Manual Time | With AI DevStudio | Time Saved |
 | ------------------- | ----------- | --------------------- | ---------- |
 | Security analysis   | 45-60 min   | 3-5 min               | ~50 min    |
 | Architecture review | 30-45 min   | 5-8 min               | ~35 min    |
@@ -576,7 +576,7 @@ Custom skills appear with a `(user)` tag in Claude Code CLI to distinguish them 
 | Secrets scanning    | 30-45 min   | 2-3 min               | ~35 min    |
 | Systematic debugging | 45-75 min  | 5-10 min              | ~50 min    |
 
-**Total: 8-10 hours saved per week with Claude DevStudio's professional-grade analysis and automation**
+**Total: 8-10 hours saved per week with AI DevStudio's professional-grade analysis and automation**
 
 ## Requirements
 

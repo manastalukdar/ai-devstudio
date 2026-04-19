@@ -5,7 +5,7 @@
  https://opensource.org/licenses/MIT
 -->
 
-# Token Optimization Guide for Claude DevStudio
+# Token Optimization Guide for AI DevStudio
 
 ## Executive Summary
 
@@ -1907,7 +1907,7 @@ echo "  - Faster response:             4-5x"
 
 cat << 'EOF'
 ╔══════════════════════════════════════════════════════════════╗
-║          Claude DevStudio - Token Optimization Dashboard          ║
+║          AI DevStudio - Token Optimization Dashboard          ║
 ╚══════════════════════════════════════════════════════════════╝
 
 📊 Overall Statistics (Last 30 Days)
@@ -3162,7 +3162,7 @@ fi
 
 ## Conclusion
 
-Token optimization is not just about cost savings—it's about building skills that are fast, efficient, and scalable. By following the principles and patterns outlined in this guide, Claude DevStudio skills can achieve 60-90% token reductions while maintaining or improving functionality.
+Token optimization is not just about cost savings—it's about building skills that are fast, efficient, and scalable. By following the principles and patterns outlined in this guide, AI DevStudio skills can achieve 60-90% token reductions while maintaining or improving functionality.
 
 **Key Takeaways:**
 
@@ -3229,7 +3229,7 @@ Token optimization is not just about cost savings—it's about building skills t
 | Documentation | 5 | 80-90% | Template-based generation, structure caching |
 | Code Generation | 8 | 70-85% | Template libraries, incremental scaffolding |
 
-This guide serves as the foundation for all skill development in Claude DevStudio, ensuring every skill is optimized from day one.
+This guide serves as the foundation for all skill development in AI DevStudio, ensuring every skill is optimized from day one.
 
 ---
 

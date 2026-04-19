@@ -1,6 +1,6 @@
-# Claude DevStudio Hooks System
+# AI DevStudio Hooks System
 
-Claude Code fires hook events at key lifecycle moments. This directory contains the hooks infrastructure for Claude DevStudio.
+Claude Code fires hook events at key lifecycle moments. This directory contains the hooks infrastructure for AI DevStudio.
 
 ## How It Works
 

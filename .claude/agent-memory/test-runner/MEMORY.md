@@ -1,7 +1,7 @@
 # Test Runner — Institutional Memory
 
 This file is loaded into the agent's context on every invocation. It records
-recurring test patterns, failure modes, and coverage gaps for Claude DevStudio.
+recurring test patterns, failure modes, and coverage gaps for AI DevStudio.
 
 ## Project Test Landscape
 

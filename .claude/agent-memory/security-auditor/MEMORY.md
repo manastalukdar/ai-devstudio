@@ -1,7 +1,7 @@
 # Security Auditor — Institutional Memory
 
 This file is loaded into the agent's context on every invocation. It records
-security patterns, known clean areas, and past findings for Claude DevStudio.
+security patterns, known clean areas, and past findings for AI DevStudio.
 
 ## Project Security Posture
 

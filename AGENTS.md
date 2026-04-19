@@ -5,15 +5,15 @@
  https://opensource.org/licenses/MIT
 -->
 
-# AGENTS.md - AI Agent Guidelines for Claude DevStudio
+# AGENTS.md - AI Agent Guidelines for AI DevStudio
 
 ## Purpose
 
-This document provides guidelines for AI assistants (particularly Claude Code) when working with the Claude DevStudio project. It ensures consistent, safe, and effective collaboration between human developers and AI agents.
+This document provides guidelines for AI assistants (particularly Claude Code) when working with the AI DevStudio project. It ensures consistent, safe, and effective collaboration between human developers and AI agents.
 
 ## Project Identity
 
-**Claude DevStudio** is a professional development environment that extends Claude Code CLI with 100 professional skills across 3 tiers for automated workflows, code quality analysis, and session management.
+**AI DevStudio** is a professional development environment that extends Claude Code CLI with 100 professional skills across 3 tiers for automated workflows, code quality analysis, and session management.
 
 **Core Philosophy**: Time-saving automation with safety-first design and professional-grade code quality.
 
@@ -342,7 +342,7 @@ When adding framework-specific features:
 
 ### Three-Tier Architecture
 
-Claude DevStudio uses a Command → Agent → Skill hierarchy:
+AI DevStudio uses a Command → Agent → Skill hierarchy:
 
 - **Commands** (`.claude/commands/`): High-level orchestrators. Invoke agents and skills, manage user interaction, aggregate results.
 - **Agents** (`.claude/agents/`): Specialized workers with restricted tool sets and preloaded skills. Run in isolated context.
@@ -476,7 +476,7 @@ hooks:
 
 ## Success Metrics
 
-A successful interaction with Claude DevStudio:
+A successful interaction with AI DevStudio:
 
 1. **Time Saved**: Automates repetitive tasks effectively
 2. **Quality Maintained**: Code quality matches or exceeds manual work
@@ -506,4 +506,4 @@ A successful interaction with Claude DevStudio:
 
 ---
 
-**Remember**: Claude DevStudio is a tool to enhance developer productivity. Always prioritize the developer's needs, maintain code quality, and follow safety-first principles.
+**Remember**: AI DevStudio is a tool to enhance developer productivity. Always prioritize the developer's needs, maintain code quality, and follow safety-first principles.

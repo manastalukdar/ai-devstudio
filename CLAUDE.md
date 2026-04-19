@@ -5,11 +5,11 @@
  https://opensource.org/licenses/MIT
 -->
 
-# Claude DevStudio - Professional Claude Code Skills
+# AI DevStudio - Professional Claude Code Skills
 
 ## Project Overview
 
-Claude DevStudio is a comprehensive development environment featuring **100 professional skills** for Claude Code CLI that automate repetitive development tasks and save 10-15 hours per week.
+AI DevStudio is a comprehensive development environment featuring **100 professional skills** for Claude Code CLI that automate repetitive development tasks and save 10-15 hours per week.
 
 Key capability areas: Testing & TDD, CI/CD & DevOps, API Development, Database Management, Security & Code Quality, Debugging & Performance, Git Workflows, Documentation, Code Generation, Session Management, MCP Integration.
 
