@@ -1,23 +1,29 @@
 # Quality Fixer — Institutional Memory
 
-This file is loaded into the agent's context on every invocation. It records
-recurring quality issues and fix patterns for AI DevStudio.
+Loaded into the agent's context on every invocation. Uses the **Compiled Truth + Timeline** pattern: Compiled Truth holds the current synthesized understanding; Timeline is an append-only evidence trail. Update Compiled Truth in place when findings confirm or contradict it. Prepend new Timeline entries.
 
-## Project Quality Stack
+---
 
-- Python scripts (hooks.py, install.py, uninstall.py, compact-reminder.py):
+## Compiled Truth
+
+**Quality tool stack:**
+- Python (`hooks.py`, `install.py`, `uninstall.py`, `compact-reminder.py`):
   - Syntax: `python3 -m py_compile <file>`
-  - Linting: `ruff check <file>` if ruff available, else `python3 -m pyflakes <file>`
-  - Type check: `mypy <file> --ignore-missing-imports` if mypy available
-- Shell scripts (install.sh, uninstall.sh):
-  - Lint: `shellcheck <file>` (must pass with zero warnings)
+  - Linting: `ruff check <file>` if available, else `python3 -m pyflakes <file>`
+  - Type check: `mypy <file> --ignore-missing-imports` if available
+- Shell (`install.sh`, `uninstall.sh`):
+  - Lint: `shellcheck <file>` — must pass with zero warnings
   - Syntax: `bash -n <file>`
-- Markdown (SKILL.md, docs): consistent heading hierarchy, fenced code blocks with language id
+- Markdown (SKILL.md, docs): consistent heading hierarchy, fenced code blocks with language identifier, no trailing whitespace
 
-## Recurring Issues
+**Recurring patterns to check first:**
+- Missing language identifier on fenced code blocks in SKILL.md files
+- `shellcheck` SC2086 (unquoted variable) in shell scripts
+- f-string vs `.format()` inconsistency in Python files
+- Trailing whitespace in markdown tables
 
-_Append quality patterns found across multiple fix runs here._
+---
 
-## Fix History
+## Timeline
 
-_Append per-run summaries here after each quality fix cycle._
+_Prepend new entries here after each fix cycle. Format: `- YYYY-MM-DD: <issue found and fixed>`_
