@@ -15,7 +15,7 @@ Professional development studio for Claude Code CLI with 99 enterprise-grade ski
 
 **📢 New Claude Skills Format**: AI DevStudio has been updated to use the official Claude Skills format with proper YAML frontmatter and directory structure. Each skill now resides in its own directory (`skills/skill-name/SKILL.md`) following the [Agent Skills](https://agentskills.io) open standard.
 
-AI DevStudio is the most comprehensive development environment for Claude Code CLI, featuring 100 professional skills across 4 tiers (Tier 1: 16 essentials, Tier 2: 38 advanced, Tier 3: 16 power-user, Core: 30 foundation). This intelligent development studio extends Claude with enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging - leveraging Claude's contextual understanding while delivering structured, predictable outcomes optimized for Opus 4 and Sonnet 4 models.
+AI DevStudio is the most comprehensive development environment for Claude Code CLI, featuring 101 professional skills across 4 tiers (Tier 1: 16 essentials, Tier 2: 39 advanced, Tier 3: 16 power-user, Core: 30 foundation). This intelligent development studio extends Claude with enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging - leveraging Claude's contextual understanding while delivering structured, predictable outcomes optimized for Opus 4 and Sonnet 4 models.
 
 ## Quick Links
 
@@ -111,10 +111,10 @@ rm system-prompt.md                       # generic
 
 ## Skills
 
-100 professional skills optimized for Claude Code CLI's native capabilities, organized across 4 tiers:
+101 professional skills optimized for Claude Code CLI's native capabilities, organized across 4 tiers:
 
 **🚀 Tier 1 (16 skills)**: High-impact essentials for immediate productivity
-**⚡ Tier 2 (37 skills)**: Advanced features for professional workflows
+**⚡ Tier 2 (38 skills)**: Advanced features for professional workflows
 **🔥 Tier 3 (16 skills)**: Power-user tools for specialized needs
 **🏛️ Core (30 skills)**: Foundational daily-driver skills
 
@@ -816,7 +816,7 @@ This project builds upon and extends excellent work from the open-source communi
 - **[Section 508](https://www.section508.gov)** - Federal accessibility standards
 - **[WebAIM](https://webaim.org)** - Web accessibility resources and guidelines
 
-This repository enhances these foundations with 100 professional skills across 3 tiers, refined workflows, and integrated session management capabilities tailored for professional development environments.
+This repository enhances these foundations with 101 professional skills across 4 tiers, refined workflows, and integrated session management capabilities tailored for professional development environments.
 
 ## License
 
