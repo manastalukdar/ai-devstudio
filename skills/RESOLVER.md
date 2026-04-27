@@ -153,6 +153,8 @@ Inspired by [gbrain's RESOLVER.md pattern](https://github.com/garrytan/gbrain).
 | "finish branch", "close this branch", "squash and merge" | `/branch-finish` |
 | "worktree", "parallel branch work", "git worktree" | `/git-worktree` |
 | "undo", "rollback", "revert last operation" | `/undo` |
+| "save context", "save my WIP", "checkpoint my work", "switch tasks" | `/context-save` |
+| "restore context", "resume WIP", "get my work back", "unpause" | `/context-restore` |
 
 ---
 
@@ -195,6 +197,37 @@ Inspired by [gbrain's RESOLVER.md pattern](https://github.com/garrytan/gbrain).
 | "lazy load", "code splitting", "defer loading" | `/lazy-load` |
 | "cache strategy", "HTTP caching", "service worker cache" | `/cache-strategy` |
 | "component library", "Storybook", "design system" | `/component-library` |
+
+---
+
+## Deployment & Monitoring
+
+| User says... | Route to |
+|---|---|
+| "watch the deploy", "monitor after deploy", "post-deploy check" | `/canary` |
+| "is my deployment healthy?", "poll the health endpoint", "check for regressions" | `/canary` |
+
+---
+
+## Developer Experience
+
+| User says... | Route to |
+|---|---|
+| "audit developer experience", "DX review", "onboarding friction" | `/devex-review` |
+| "review planning session", "stop and think before coding", "YC office hours" | `/office-hours` |
+| "weekly retro", "retrospective", "what shipped this week?" | `/retro` |
+| "record a learning", "save this pattern", "remember this insight" | `/learn add` |
+| "show my learnings", "what have I learned?", "list learnings" | `/learn list` |
+| "apply learnings", "relevant patterns for this context" | `/learn apply` |
+
+---
+
+## Safety & Guardrails
+
+| User says... | Route to |
+|---|---|
+| "is this command safe?", "should I run this?", "warn me before X" | `/careful` |
+| "rm -rf", "DROP TABLE", "force push", "git reset --hard" | `/careful` (auto-intercept) |
 
 ---
 
