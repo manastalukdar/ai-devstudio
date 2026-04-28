@@ -47,10 +47,16 @@ echo "Fetching skill list from repository..."
 API_RESPONSE=$(curl -sSL "$API_URL" -H "Accept: application/vnd.github.v3+json")
 
 # Parse skill names (requires jq; falls back to grep+sed)
+# Use while-read instead of mapfile for bash 3.2 compatibility (macOS default shell)
+SKILLS=()
 if command -v jq &> /dev/null; then
-    mapfile -t SKILLS < <(echo "$API_RESPONSE" | jq -r '.[].name' 2>/dev/null)
+    while IFS= read -r line; do
+        [[ -n "$line" ]] && SKILLS+=("$line")
+    done < <(echo "$API_RESPONSE" | jq -r '.[].name' 2>/dev/null)
 else
-    mapfile -t SKILLS < <(echo "$API_RESPONSE" | grep '"name"' | sed 's/.*"name": "\(.*\)".*/\1/' | grep -v '^\[' | sort -u)
+    while IFS= read -r line; do
+        [[ -n "$line" ]] && SKILLS+=("$line")
+    done < <(echo "$API_RESPONSE" | grep '"name"' | sed 's/.*"name": "\(.*\)".*/\1/' | grep -v '^\[' | sort -u)
 fi
 
 if [[ "${#SKILLS[@]}" -eq 0 ]]; then
