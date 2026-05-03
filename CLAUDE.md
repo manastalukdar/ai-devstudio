@@ -9,7 +9,7 @@
 
 ## Project Overview
 
-AI DevStudio is a comprehensive development environment featuring **120 professional skills** for Claude Code CLI that automate repetitive development tasks and save 10-15 hours per week.
+AI DevStudio is a comprehensive development environment featuring **128 professional skills** for Claude Code CLI that automate repetitive development tasks and save 10-15 hours per week.
 
 Key capability areas: Testing & TDD, CI/CD & DevOps, API Development, Database Management, Security & Code Quality, Debugging & Performance, Git Workflows, Documentation, Code Generation, Session Management, MCP Integration.
 
@@ -17,10 +17,10 @@ Key capability areas: Testing & TDD, CI/CD & DevOps, API Development, Database M
 
 ### Three-Tier Skill Organization
 
-- **Tier 1** (21 skills): High-impact essentials for immediate productivity
-- **Tier 2** (52 skills): Advanced features for professional workflows
+- **Tier 1** (23 skills): High-impact essentials for immediate productivity
+- **Tier 2** (56 skills): Advanced features for professional workflows
 - **Tier 3** (16 skills): Power-user tools for specialized capabilities
-- **Core** (31 skills): Original foundation skills
+- **Core** (33 skills): Original foundation skills
 
 ### Skill Structure
 
@@ -84,9 +84,9 @@ See [README.md](README.md) for full installation instructions and skill listings
 
 ## Current State
 
-- **Skills**: 120 implemented
+- **Skills**: 128 implemented
 - **Token Optimization**: 100% complete — 60-70% average reduction across all skills
-- **Tiers**: Tier 1 (21), Tier 2 (52), Tier 3 (16), Core (31)
+- **Tiers**: Tier 1 (23), Tier 2 (56), Tier 3 (16), Core (33)
 
 See [`docs/skills/`](docs/skills/) for full expansion plan and per-batch implementation summaries.
 
@@ -114,7 +114,7 @@ claude "/find-todos" && claude "/fix-todos"
 
 ## Project Goals
 
-1. Save 10-15 hours/week through 120 professional skills
+1. Save 10-15 hours/week through 128 professional skills
 2. Professional-grade code analysis, security scanning, and accessibility compliance
 3. Streamline CI/CD, deployment validation, release automation, and IaC
 4. Enforce TDD workflows, mutation testing, and comprehensive test coverage
