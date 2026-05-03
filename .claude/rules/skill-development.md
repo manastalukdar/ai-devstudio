@@ -12,6 +12,7 @@ Project-local agent/command utility skills live at `.claude/skills/<name>/SKILL.
 | `name` | Yes | kebab-case, max 64 chars |
 | `description` | Yes | Triggers auto-invocation; be specific and action-oriented |
 | `disable-model-invocation` | Yes | `true` for side-effect skills (/commit, /deploy, /push) |
+| `risk` | Yes | `none` · `safe` · `critical` · `offensive` · `unknown` — declares safety level; offensive skills require explicit user authorization notice |
 | `user-invocable` | No | Set `false` to hide from menu (agent/command-consumed skills) |
 | `allowed-tools` | No | Restrict tool access per skill |
 | `context` | No | `fork` to run skill in an isolated subagent |
@@ -75,5 +76,5 @@ Key patterns to apply:
 - Handles edge cases gracefully (empty repo, no staged changes, etc.)
 - Output is clear and actionable
 - Under 100 lines of instructions (excluding frontmatter, code blocks, Token Optimization section)
-- Includes YAML frontmatter with all required fields
+- Includes YAML frontmatter with all required fields (including `risk`)
 - Token Optimization section present with concrete numbers
