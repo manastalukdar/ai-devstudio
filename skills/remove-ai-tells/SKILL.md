@@ -75,6 +75,9 @@ grep -niE "\b(very very|really really|quite (quite|very))\b" $TARGETS
 grep -nc "—" $TARGETS | awk -F: '$2 >= 2 {print $1": "$2" em dash(es)"}' || true
 # Also flag lines with multiple em dashes on one line
 grep -nE ".+—.+—" $TARGETS
+
+# Section separator overuse — "---" on its own line (horizontal rule used as section divider)
+grep -nE "^---$" $TARGETS
 ```
 
 If zero matches across all patterns, output:
@@ -154,6 +157,7 @@ For these, show the current line and the proposed rewrite, then ask before chang
 
 - Filler openers (`Certainly!`, `Absolutely!`, etc.) — show the full sentence so the user can see if removing the opener changes meaning
 - Em dashes — show each occurrence in context; replace with a comma, colon, or parentheses depending on use, or remove the clause if it is padding. Flag files where em dashes appear more than once per 30 lines as likely overused.
+- `---` section separators — flag standalone horizontal rules used between prose sections; remove and rely on headings for structure instead. Skip occurrences inside YAML front matter blocks or code fences.
 - `leverage` when used as a noun ("leverage over competitors") — may be correct usage
 - `best practices` — sometimes the appropriate term for the domain
 - Self-referential phrases that may be intentional (e.g., a disclaimer section)
