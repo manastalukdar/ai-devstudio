@@ -60,13 +60,22 @@ grep -niE "(It('s| is) (worth|important) (noting|to note)|Please note that|It sh
 grep -niE "\b(Moreover,|Furthermore,|Additionally,|In conclusion,|In summary,|That being said,|With that in mind,|Having said that,|At the end of the day,|It goes without saying)" $TARGETS
 
 # AI vocabulary — words/phrases statistically overrepresented in LLM output
-grep -niE "\b(delve|leverage[sd]?|utilize[sd]?|facilitate[sd]?|robust(ness)?|seamless(ly)?|holistic(ally)?|synergy|synergize|cutting-edge|state-of-the-art|groundbreaking|transformative|revolutionize|unlock(ing)? (the )?(full |true )?potential|foster(ing)?|empower(ing)?|best practices)\b" $TARGETS
+grep -niE "\b(delve|leverage[sd]?|utilize[sd]?|facilitate[sd]?|robust(ness)?|seamless(ly)?|holistic(ally)?|synergy|synergize|cutting-edge|state-of-the-art|groundbreaking|transformative|revolutionize|unlock(ing)? (the )?(full |true )?potential|foster(ing)?|empower(ing)?|best practices|pivotal|crucial|enhance[sd]?|underscore[sd]?|landscape|vibrant|testament|showcase[sd]?|intricate(ly)?|evolving)\b" $TARGETS
 
 # Self-referential AI phrases
 grep -niE "(As an AI|As a language model|As your assistant|I('m| am) here to help|Feel free to (ask|reach out)|Don't hesitate to|I'd be (happy|glad|delighted) to)" $TARGETS
 
 # Padding openers
 grep -niE "^(In other words,|To put it simply,|Simply put,|In essence,|Essentially,|Basically,|Ultimately,|Overall,)" $TARGETS
+
+# Contrast structures
+grep -niE "(It'?s not .+, it'?s|Not [A-Z][^.]+\. Not [A-Z]|Despite this)" $TARGETS
+
+# Vague authority
+grep -niE "(experts? say|experts? (argue|suggest|agree|believe|note)|industry reports?|many believe|studies show|research (shows|suggests|indicates))" $TARGETS
+
+# Importance / significance sentences
+grep -niE "\b(impact|legacy|significance|broader (trend|context|implications)|plays? a (pivotal|crucial|key|vital) role)\b" $TARGETS
 
 # Excessive affirmative intensifiers
 grep -niE "\b(very very|really really|quite (quite|very))\b" $TARGETS
@@ -151,6 +160,18 @@ Apply these without asking — the replacement is always better:
 | `That being said,` | *(remove)* |
 | `With that in mind,` | *(remove)* |
 | `At the end of the day,` | *(remove)* |
+| `pivotal` | *(remove or replace with specific adjective)* |
+| `crucial` | *(remove or use "required" / "needed" if accurate)* |
+| `enhance` | *(replace with what specifically changes: "speeds up", "cuts", "adds")* |
+| `underscore` (verb) | `show` / `confirm` / *(remove)* |
+| `landscape` (abstract) | *(remove or name the specific domain)* |
+| `vibrant` | *(remove)* |
+| `testament` | *(remove the whole clause — state the fact directly)* |
+| `showcase` | `show` / `demonstrate` |
+| `intricate` | *(remove or describe the specific complexity)* |
+| `evolving` | *(remove or name what is changing)* |
+| `Despite this,` | *(remove — rewrite as two plain sentences)* |
+| `Overall,` | *(remove — just end the section)* |
 
 Apply all automatic replacements first using Edit, removing the minimal surrounding text.
 
@@ -165,6 +186,12 @@ For these, show the current line and the proposed rewrite, then ask before chang
 - `leverage` when used as a noun ("leverage over competitors") — may be correct usage
 - `best practices` — sometimes the appropriate term for the domain
 - Self-referential phrases that may be intentional (e.g., a disclaimer section)
+- Contrast structures (`It's not X, it's Y` / `Not A. Not B. But C.`) — show the sentence; rewrite as a plain positive statement
+- Vague authority (`experts say`, `many believe`, `industry reports`) — remove the attribution entirely and state the claim directly, or cut the sentence if there is no specific source
+- Importance sentences — any sentence whose only purpose is to state impact, legacy, significance, or broader trends without a specific claim; delete it
+- Sentences over 16 words — show the sentence and a shorter rewrite; confirm before applying
+- Universal sentences — any sentence that could apply to 1,000 other topics without modification; delete it
+- Motivational tone — sentences written for an audience of many (TED Talk register, preaching, "you can do this" energy); rewrite for one reader or delete
 - Any sentence where the replacement changes meaning or register
 
 Example prompt:
@@ -198,6 +225,16 @@ Skipped (0):
 
 Remaining AI tells: 0
 ```
+
+## Rewrite Output Rules
+
+These rules govern the text produced by the rewrite — not the skill's report.
+
+- Output the clean version only — no explanation of what changed inline
+- No formatting tricks: no bold to highlight fixes, no italics for emphasis, no `~~strikethrough~~`
+- No summary or commentary appended after the rewritten text
+- Write for one reader, not an audience — direct address, not stage register
+- If a general claim has no specific backing, delete the sentence rather than hedging it
 
 ## Edge Cases
 
