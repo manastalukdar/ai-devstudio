@@ -1,6 +1,6 @@
 ---
 name: remove-ai-tells
-description: Detect AI-generated writing patterns in documents — reports filler openers, AI closers, hedge phrases, cliché transitions, AI vocabulary, rhetorical question-answer pairs, and overused intensifiers with a per-document AI-written percentage, then asks before removing anything.
+description: Detect AI-generated writing patterns in documents — reports filler openers, AI closers, hedge phrases, cliché transitions, template phrasing, AI vocabulary, rhetorical question-answer pairs, and overused intensifiers with a per-document AI-written percentage, then asks before removing anything.
 disable-model-invocation: false
 ---
 
@@ -30,21 +30,30 @@ Resolution order — use the first that yields a valid file:
 ```bash
 # Steps 1 and 3 are bash-resolvable; step 2 is resolved from IDE context.
 
+declare -a TARGETS
+
 if [[ -n "$ARGUMENTS" ]]; then
-    TARGETS="$ARGUMENTS"
+    # Split normal whitespace-separated arguments, then keep each resolved path quoted later.
+    read -r -a TARGETS <<< "$ARGUMENTS"
 elif [[ -n "$IDE_ACTIVE_FILE" ]] && echo "$IDE_ACTIVE_FILE" | grep -qE '\.(md|txt|rst|adoc)$'; then
     # IDE_ACTIVE_FILE is populated from <ide_opened_file> context when available
-    TARGETS="$IDE_ACTIVE_FILE"
-    echo "Using IDE active file: $TARGETS"
+    TARGETS=("$IDE_ACTIVE_FILE")
+    echo "Using IDE active file: $IDE_ACTIVE_FILE"
 elif ! git diff --cached --quiet; then
-    TARGETS=$(git diff --cached --name-only | grep -E '\.(md|txt|rst|adoc)$')
+    mapfile -t TARGETS < <(git diff --cached --name-only -- '*.md' '*.txt' '*.rst' '*.adoc')
 else
     echo "No target file specified and no staged doc files found."
     echo "Usage: /remove-ai-tells <file>"
     exit 1
 fi
 
-echo "Targets: $TARGETS"
+if (( ${#TARGETS[@]} == 0 )); then
+    echo "No doc files found."
+    exit 1
+fi
+
+printf 'Targets:\n'
+printf '  %s\n' "${TARGETS[@]}"
 ```
 
 ## Step 2 — Grep for AI-Tell Patterns (Early Exit)
@@ -52,112 +61,149 @@ echo "Targets: $TARGETS"
 Run all pattern checks before reading any file content. If nothing matches, stop immediately.
 
 ```bash
+FINDINGS_FILE=$(mktemp)
+
+run_check() {
+    local _label="$1"
+    local pattern="$2"
+    local output
+    output=$(grep -HniE "$pattern" "${TARGETS[@]}" || true)
+    if [[ -n "$output" ]]; then
+        printf '%s\n' "$output" | tee -a "$FINDINGS_FILE"
+    fi
+}
+
 # Filler openers (sentence-start affirmations)
-grep -niE "^(Certainly|Absolutely|Of course|Sure,|Great!|Excellent!|Awesome|Wonderful|Totally!|Noted!|Perfect!|Interesting!|Fantastic!|Exactly!|Indeed,|Naturally,|Obviously,|Clearly,)[,!.]?" $TARGETS
+run_check "Filler openers" "^(Certainly|Absolutely|Of course|Sure,|Great!|Excellent!|Awesome|Wonderful|Totally!|Noted!|Perfect!|Interesting!|Fantastic!|Exactly!|Indeed,|Naturally,|Obviously,|Clearly,)[,!.]?"
 # "Great question" variants — strong AI tell whether or not they open the line
-grep -niE "(Great question[!.]?|That'?s (a )?(great|excellent|good) question|Thank(s| you) for (your question|asking)[.!]?)" $TARGETS
+run_check "Great question variants" "(Great question[!.]?|That'?s (a )?(great|excellent|good) question|Thank(s| you) for (your question|asking)[.!]?)"
 # Validation openers — AI affirming the user before answering
-grep -niE "^(You'?re (absolutely |completely )?(right|correct)[.!,]|That'?s (absolutely |completely )?correct[.!,])" $TARGETS
+run_check "Validation openers" "^(You'?re (absolutely |completely )?(right|correct)[.!,]|That'?s (absolutely |completely )?correct[.!,])"
 
 # AI closers — sign-off phrases almost never written by humans
-grep -niE "(I hope (this (helps|clarifies|answers)|that (helps|answers)|you found this (helpful|useful))|Hope this helps|I trust this helps|Let me know if you (have any questions|need (anything|further|more))|Is there anything else (I can|you'?d like)|If you have any questions,? feel free to|Happy to (help|clarify|answer)|Thank(s| you) for (your question|asking)[.!]?$)" $TARGETS
+run_check "AI closers" "(I hope (this (helps|clarifies|answers)|that (helps|answers)|you found this (helpful|useful))|Hope this helps|I trust this helps|Let me know if you (have any questions|need (anything|further|more))|Is there anything else (I can|you'?d like)|If you have any questions,? feel free to|Happy to (help|clarify|answer)|Thank(s| you) for (your question|asking)[.!]?$)"
 
 # Hedging phrases
-grep -niE "(It('s| is) (worth|important) (noting|to note|mentioning|considering|emphasizing|pointing out)|Please note that|It should be noted|Note that,|It is (important|essential|critical) to (note|mention|understand|remember)|needless to say|To be (fair|honest|clear|precise),|Just to (clarify|be clear),|To clarify,|[Aa]s (I |we )?(mentioned|noted|discussed) (earlier|above|before)|[Kk]eep in mind that|[Bb]ear in mind that|I should (note|mention)|[Ww]orth (mentioning|pointing out)|I'?d like to (point out|highlight|note|emphasize)|I want to (highlight|emphasize))" $TARGETS
+run_check "Hedging phrases" "(It('s| is) (worth|important) (noting|to note|mentioning|considering|emphasizing|pointing out)|Please note that|It should be noted|Note that,|It is (important|essential|critical) to (note|mention|understand|remember)|needless to say|To be (fair|honest|clear|precise),|Just to (clarify|be clear),|To clarify,|[Aa]s (I |we )?(mentioned|noted|discussed) (earlier|above|before)|[Kk]eep in mind that|[Bb]ear in mind that|I should (note|mention)|[Ww]orth (mentioning|pointing out)|I'?d like to (point out|highlight|note|emphasize)|I want to (highlight|emphasize))"
 
 # Transition clichés
-grep -niE "\b(Moreover,|Furthermore,|Additionally,|In addition,|In conclusion,|In summary,|That being said,|That said,|With that in mind,|With th(is|at) in mind,|With that said,|Having said that,|At the end of the day,|It goes without saying|First and foremost,|Last but not least,|To summarize,|To recap,|In a nutshell,|On that note,|To that end,|As such,|In light of (this|that),|Moving forward,|Going forward,|On a related note,|On the flip side,|Suffice it to say,|All things considered,|By the same token,|To put it another way,|In any case,|Nonetheless,|Nevertheless,|Not only that,)" $TARGETS
+run_check "Transition clichés" "\b(Moreover,|Furthermore,|Additionally,|In addition,|In conclusion,|In summary,|That being said,|That said,|With that in mind,|With th(is|at) in mind,|With that said,|Having said that,|At the end of the day,|It goes without saying|First and foremost,|Last but not least,|To summarize,|To recap,|In a nutshell,|On that note,|To that end,|As such,|In light of (this|that),|Moving forward,|Going forward,|On a related note,|On the flip side,|Suffice it to say,|All things considered,|By the same token,|To put it another way,|In any case,|Nonetheless,|Nevertheless,|Not only that,)"
+
+# Template phrasing — generic article scaffolding common in AI output
+run_check "Template phrasing" "\b(In today'?s .{0,40} (world|landscape|environment|era)|in an era where|now more than ever|when it comes to|at its core|the reality is|the truth is|not just [^,.;]+, but|more than just|isn'?t just [^,.;]+, it'?s|whether you'?re (a )?[^,.;]+ or|from [^,.;]+ to [^,.;]+|there are several reasons why|let'?s take a closer look|ultimately, the choice depends on|the future of [^,.;]+ is)\b"
 
 # Structural AI patterns
-grep -niE "(The key takeaway(s)?[: ]|Key takeaway(s)?:)" $TARGETS
+run_check "Key takeaways" "(The key takeaway(s)?[: ]|Key takeaway(s)?:)"
 # "Here are N ways/steps/tips/reasons" — AI list intro
-grep -niE "^Here are [0-9]+ (ways?|steps?|tips?|reasons?|things?|examples?|point)" $TARGETS
+run_check "List intros" "^Here are [0-9]+ (ways?|steps?|tips?|reasons?|things?|examples?|point)"
 # "Pro tip" / "Quick tip" — AI filler label
-grep -niE "^(Pro tip|Quick tip)[: ]" $TARGETS
+run_check "Tip labels" "^(Pro tip|Quick tip)[: ]"
 # Rhetorical question immediately answered — "What is X? X is …" (same or next line)
-grep -nE "\?" $TARGETS | awk -F: 'prev && $2 ~ /^[A-Z]/ { print prev; print $0 } { prev=$0 }'
+for target in "${TARGETS[@]}"; do
+    awk '
+        index($0, "?") { prev_line=NR; prev_text=$0; next }
+        prev_line && $0 ~ /^[[:space:]]*[A-Z]/ {
+            print FILENAME ":" prev_line ":" prev_text
+            print FILENAME ":" NR ":" $0
+            prev_line=0
+        }
+        /^[[:space:]]*$/ { prev_line=0 }
+    ' "$target" | tee -a "$FINDINGS_FILE"
+done
 # Bold overuse — flag files where bolding appears on more than 1 in 10 non-blank lines
-grep -c "\*\*" $TARGETS | awk -F: -v total="$TOTAL_LINES" '$2 > total/10 {print $1": "$2" bolded phrases (possible over-formatting)"}'
+for target in "${TARGETS[@]}"; do
+    total_lines=$(grep -c . "$target" || echo 1)
+    bold_lines=$(grep -c "\*\*" "$target" || true)
+    if (( bold_lines * 10 > total_lines )); then
+        printf '%s: %s bolded line(s) across %s non-blank lines (possible over-formatting)\n' "$target" "$bold_lines" "$total_lines" | tee -a "$FINDINGS_FILE"
+    fi
+done
 
 # AI vocabulary — words/phrases statistically overrepresented in LLM output
-grep -niE "\b(delve|dive into|unpack(ing)?|leverage[sd]?|utilize[sd]?|facilitate[sd]?|robust(ness)?|seamless(ly)?|holistic(ally)?|synergy|synergize|cutting.?edge|state.?of.?the.?art|groundbreaking|transformative|revolutionize|unlock(ing)? (the )?(full |true )?potential|foster(ing)?|empower(ing)?|best practices|pivotal|crucial|enhance[sd]?|underscore[sd]?|landscape|vibrant|testament|showcase[sd]?|intricate(ly)?|evolving)\b" $TARGETS
+run_check "AI vocabulary" "\b(delve|dive into|unpack(ing)?|leverage[sd]?|utilize[sd]?|facilitate[sd]?|robust(ness)?|seamless(ly)?|holistic(ally)?|synergy|synergize|cutting.?edge|state.?of.?the.?art|groundbreaking|transformative|revolutionize|unlock(ing)? (the )?(full |true )?potential|foster(ing)?|empower(ing)?|best practices|pivotal|crucial|enhance[sd]?|underscore[sd]?|landscape|vibrant|testament|showcase[sd]?|intricate(ly)?|evolving)\b"
 # Additional high-frequency LLM vocabulary
-grep -niE "\b(nuanced?|comprehensive|meticulous(ly)?|paramount|streamline[sd]?|actionable|harness(ing|ed)?|game-?changer|game-?changing|innovative|innovation|tailored|invaluable|endeavou?r(ing|ed)?|aforementioned|navigate[sd]? (the )?(complexities|challenges)|impactful|vital|scalability|scalable|elevate[sd]?|reimagine[sd]?|redefine[sd]?|disruptive|disrupt(ing|ed)?|pave the way|at the forefront)\b" $TARGETS
+run_check "High-frequency LLM vocabulary" "\b(nuanced?|comprehensive|meticulous(ly)?|paramount|streamline[sd]?|actionable|harness(ing|ed)?|game-?changer|game-?changing|innovative|innovation|tailored|invaluable|endeavou?r(ing|ed)?|aforementioned|navigate[sd]? (the )?(complexities|challenges)|impactful|vital|scalability|scalable|elevate[sd]?|reimagine[sd]?|redefine[sd]?|disruptive|disrupt(ing|ed)?|pave the way|at the forefront)\b"
 # Metaphorical "drive" — "drive results/innovation/growth/success/change"
-grep -niE "\bdrive[sd]? (results?|innovation|growth|success|change|impact|value|adoption|engagement)\b" $TARGETS
+run_check "Metaphorical drive" "\bdrive[sd]? (results?|innovation|growth|success|change|impact|value|adoption|engagement)\b"
 # Additional aspirational/corporate LLM vocabulary
-grep -niE "\b(propel(ling|led)?|catalyze[sd]?|catalyst|amplify|amplified|amplifying|bolster(ing|ed)?|accelerate[sd]? (growth|adoption|change|innovation|progress)|spearhead(ing|ed)?|champion(ing|ed)? (innovation|diversity|change|growth)|synergistic(ally)?|paradigm( shift)?|ecosystem)\b" $TARGETS
+run_check "Aspirational corporate vocabulary" "\b(propel(ling|led)?|catalyze[sd]?|catalyst|amplify|amplified|amplifying|bolster(ing|ed)?|accelerate[sd]? (growth|adoption|change|innovation|progress)|spearhead(ing|ed)?|champion(ing|ed)? (innovation|diversity|change|growth)|synergistic(ally)?|paradigm( shift)?|ecosystem)\b"
 # Elevated register / vague praise not yet covered
-grep -niE "\b(noteworthy|commendable|multifaceted|sophisticated|optimal(ly)?|optimize[sd]?|hallmark|cornerstone|bedrock|best-in-class|world-class|top-?tier|unprecedented|revolutionary|visionary|pioneering)\b" $TARGETS
+run_check "Elevated vague praise" "\b(noteworthy|commendable|multifaceted|sophisticated|optimal(ly)?|optimize[sd]?|hallmark|cornerstone|bedrock|best-in-class|world-class|top-?tier|unprecedented|revolutionary|visionary|pioneering)\b"
 
 # Self-referential AI phrases
-grep -niE "(As an AI|As a language model|As your assistant|I('m| am) here to help|Feel free to (ask|reach out)|Don't hesitate to|I'd be (happy|glad|delighted) to|[Ll]et me walk you through|I'?ll walk you through|I want to assure you|I'?m (excited|pleased|delighted) to (share|tell|show|present)|Allow me to (explain|walk|show|clarify|demonstrate)|Let me (clarify|explain|break (this|it) down)|Let'?s (explore|examine|break down|get started|dive in|begin)|I'?ll (begin|start) by|We'?ll (cover|explore|look at|discuss|examine))" $TARGETS
+run_check "Self-referential AI phrases" "(As an AI|As a language model|As your assistant|I('m| am) here to help|Feel free to (ask|reach out)|Don't hesitate to|I'd be (happy|glad|delighted) to|[Ll]et me walk you through|I'?ll walk you through|I want to assure you|I'?m (excited|pleased|delighted) to (share|tell|show|present)|Allow me to (explain|walk|show|clarify|demonstrate)|Let me (clarify|explain|break (this|it) down)|Let'?s (explore|examine|break down|get started|dive in|begin)|I'?ll (begin|start) by|We'?ll (cover|explore|look at|discuss|examine))"
 
 # Padding openers
-grep -niE "^(In other words,|To put it simply,|Simply put,|In essence,|Essentially,|Basically,|Ultimately,|Overall,)" $TARGETS
+run_check "Padding openers" "^(In other words,|To put it simply,|Simply put,|In essence,|Essentially,|Basically,|Ultimately,|Overall,)"
 
 # Wordiness — circumlocutions always replaceable with a shorter form
-grep -niE "\b(in order to|due to the fact that|at this point in time|in the event that|with (regard|respect) to|the fact that|prior to|make use of|a (number|wide range|variety|great deal) of|is able to|has the ability to|it is possible to|as a result of|take into (consideration|account)|on a regular basis|in the case of|in spite of the fact that|in the near future|at a later (date|time)|subsequent to|for the purpose of|on the basis of|with the exception of|in the majority of cases)\b" $TARGETS
-grep -niE "\bin terms of\b" $TARGETS
+run_check "Wordiness" "\b(in order to|due to the fact that|at this point in time|in the event that|with (regard|respect) to|the fact that|prior to|make use of|a (number|wide range|variety|great deal) of|is able to|has the ability to|it is possible to|as a result of|take into (consideration|account)|on a regular basis|in the case of|in spite of the fact that|in the near future|at a later (date|time)|subsequent to|for the purpose of|on the basis of|with the exception of|in the majority of cases)\b"
+run_check "Vague connector" "\bin terms of\b"
 
 # Contrast structures
-grep -niE "(It'?s not .+, it'?s|Not [A-Z][^.]+\. Not [A-Z]|Despite this)" $TARGETS
+run_check "Contrast structures" "(It'?s not .+, it'?s|Not [A-Z][^.]+\. Not [A-Z]|Despite this)"
 
 # Vague authority
-grep -niE "(experts? say|experts? (argue|suggest|agree|believe|note)|according to experts?|many experts? (say|believe|suggest)|industry reports?|as per (industry|expert) (standards?|guidelines?|consensus)|many believe|some argue that|it could be argued that|one could argue|studies show|research (shows|suggests|indicates)|data (shows|suggests|indicates)|the data|it is (widely|generally|commonly) (believed|accepted|known|recognized|understood)|conventional wisdom (holds|suggests|says)|it has been shown that|it is (recommended|expected|suggested) that|general(ly accepted)? consensus)" $TARGETS
+run_check "Vague authority" "(experts? say|experts? (argue|suggest|agree|believe|note)|according to experts?|many experts? (say|believe|suggest)|industry reports?|as per (industry|expert) (standards?|guidelines?|consensus)|many believe|some argue that|it could be argued that|one could argue|studies show|research (shows|suggests|indicates)|data (shows|suggests|indicates)|the data|it is (widely|generally|commonly) (believed|accepted|known|recognized|understood)|conventional wisdom (holds|suggests|says)|it has been shown that|it is (recommended|expected|suggested) that|general(ly accepted)? consensus)"
 
 # Importance / significance sentences
-grep -niE "\b(impact|legacy|significance|broader (trend|context|implications)|plays? a (pivotal|crucial|key|vital) role)\b" $TARGETS
+run_check "Importance sentences" "\b(impact|legacy|significance|broader (trend|context|implications)|plays? a (pivotal|crucial|key|vital) role)\b"
 
 # Hollow superlatives — claims of importance or optimality with no supporting evidence
-grep -niE "^(Most importantly,|Above all,)" $TARGETS
-grep -niE "\b(the best way to|the most important (thing|step|aspect|consideration)|the only way to|one of the most (important|effective|powerful|significant|compelling|critical))\b" $TARGETS
+run_check "Hollow superlative openers" "^(Most importantly,|Above all,)"
+run_check "Hollow superlatives" "\b(the best way to|the most important (thing|step|aspect|consideration)|the only way to|one of the most (important|effective|powerful|significant|compelling|critical))\b"
 
 # Assertion intensifiers — AI over-asserts certainty without evidence
-grep -niE "\b(without (question|a doubt)|there'?s no denying (that|this)|undeniably|unquestionably|it'?s no secret that|make no mistake|rest assured)\b" $TARGETS
-grep -niE "\bhighly (recommended|effective|relevant|valuable|efficient|useful|important|beneficial)\b" $TARGETS
+run_check "Assertion intensifiers" "\b(without (question|a doubt)|there'?s no denying (that|this)|undeniably|unquestionably|it'?s no secret that|make no mistake|rest assured)\b"
+run_check "Overused intensifiers" "\bhighly (recommended|effective|relevant|valuable|efficient|useful|important|beneficial)\b"
 
 # Anticipatory patterns — AI preemptively answering questions the reader didn't ask
-grep -niE "^(You might be wondering|You may be (wondering|asking yourself)|You'?re probably wondering|As you (may|might|probably) (already )?know,|You may have noticed|Chances are,)" $TARGETS
-grep -niE "(This is where .{1,40} comes in|That'?s where .{1,40} comes in)" $TARGETS
+run_check "Anticipatory openers" "^(You might be wondering|You may be (wondering|asking yourself)|You'?re probably wondering|As you (may|might|probably) (already )?know,|You may have noticed|Chances are,)"
+run_check "Anticipatory setup" "(This is where .{1,40} comes in|That'?s where .{1,40} comes in)"
 
 # Excessive affirmative intensifiers
-grep -niE "\b(very very|really really|quite (quite|very))\b" $TARGETS
+run_check "Excessive affirmative intensifiers" "\b(very very|really really|quite (quite|very))\b"
 
 # Setup phrases — AI narrative scaffolding before the actual content
-grep -niE "(Having (established|covered|discussed) that,?|Now that we.?ve (established|covered|discussed|looked at)|Now that we have (established|covered))" $TARGETS
+run_check "Setup phrases" "(Having (established|covered|discussed) that,?|Now that we.?ve (established|covered|discussed|looked at)|Now that we have (established|covered))"
 
 # Hedged superlatives — AI softening an unsupported superlative claim
-grep -niE "\b(arguably (the |one of the )?(most|best)|perhaps the (most|best))\b" $TARGETS
+run_check "Hedged superlatives" "\b(arguably (the |one of the )?(most|best)|perhaps the (most|best))\b"
 
 # AI certainty phrases — vague assertion of obvious clarity
-grep -niE "\b(crystal clear|abundantly clear|perfectly clear)\b" $TARGETS
+run_check "AI certainty phrases" "\b(crystal clear|abundantly clear|perfectly clear)\b"
 
 # AI framing phrases — good news / bad news setup before findings
-grep -niE "^(The good news (is|here)|The bad news (is|here))" $TARGETS
+run_check "Good news / bad news framing" "^(The good news (is|here)|The bad news (is|here))"
 
 # Additional self-referential phrases
-grep -niE "\b(I (encourage|invite|urge) you to)\b" $TARGETS
+run_check "Additional self-referential phrases" "\b(I (encourage|invite|urge) you to)\b"
 
 # Additional anticipatory patterns
-grep -niE "(if you.?re like most (people|developers?|users?|teams?|companies|organizations)|you.?ve probably (heard|seen|noticed|experienced|come across))" $TARGETS
+run_check "Additional anticipatory patterns" "(if you.?re like most (people|developers?|users?|teams?|companies|organizations)|you.?ve probably (heard|seen|noticed|experienced|come across))"
 
 # Additional wordiness — causal circumlocutions
-grep -niE "\b(in light of the fact that|owing to the fact that)\b" $TARGETS
+run_check "Causal circumlocutions" "\b(in light of the fact that|owing to the fact that)\b"
 
 # Internal cross-references — AI signposting that substitutes for clear structure
-grep -niE "\b(in (the )?(next|following|upcoming) section|as we.?ll see (below|later|above)|as (discussed|mentioned|noted|covered) (in )?(the )?(previous|next|following) section)\b" $TARGETS
+run_check "Internal cross-references" "\b(in (the )?(next|following|upcoming) section|as we.?ll see (below|later|above)|as (discussed|mentioned|noted|covered) (in )?(the )?(previous|next|following) section)\b"
 
 # Em dash overuse — flag any line containing 2+ em dashes, or count total per file
-grep -nc "—" $TARGETS | awk -F: '$2 >= 2 {print $1": "$2" em dash(es)"}' || true
+for target in "${TARGETS[@]}"; do
+    dash_count=$(grep -o "—" "$target" | wc -l | tr -d ' ')
+    total_lines=$(grep -c . "$target" || echo 1)
+    if (( dash_count > total_lines / 30 && dash_count > 1 )); then
+        printf '%s: %s em dash(es) across %s non-blank lines\n' "$target" "$dash_count" "$total_lines" | tee -a "$FINDINGS_FILE"
+    fi
+done
 # Also flag lines with multiple em dashes on one line
-grep -nE ".+—.+—" $TARGETS
+grep -HnE ".+—.+—" "${TARGETS[@]}" | tee -a "$FINDINGS_FILE" || true
 
 # Right arrow overuse — "→" used as a prose connector or visual separator
-grep -n "→" $TARGETS
+grep -Hn "→" "${TARGETS[@]}" | tee -a "$FINDINGS_FILE" || true
 
 # Section separator overuse — "---" on its own line (horizontal rule used as section divider)
-grep -nE "^---$" $TARGETS
+grep -HnE "^---$" "${TARGETS[@]}" | tee -a "$FINDINGS_FILE" || true
 ```
 
 If zero matches across all patterns, output:
@@ -166,11 +212,19 @@ If zero matches across all patterns, output:
 No AI tells found in <file>. Document reads naturally.
 ```
 
-and stop.
+and stop. If executing the shell snippet directly, this means `[[ ! -s "$FINDINGS_FILE" ]]`.
 
 ## Step 3 — Categorize, Score, and Report Findings
 
 Group matches by category and report with line numbers. Do not make any changes yet.
+
+Before reporting, discard obvious false positives:
+
+- Matches inside fenced code blocks
+- Matches inside YAML front matter
+- Matches in blockquotes or quoted source text
+- Matches in examples that intentionally demonstrate AI output
+- Matches in generated-file notices, changelog boilerplate, or license text
 
 ```
 AI tells found in docs/report.md:
@@ -193,7 +247,11 @@ Transition clichés (2)
   L40: "Furthermore, this approach..."
   L70: "In conclusion, we recommend..."
 
-Total: 10 patterns across 1 file
+Template phrasing (2)
+  L83: "In today's fast-paced development landscape..."
+  L91: "This is not just a workflow, but a mindset..."
+
+Total: 12 patterns across 1 file
 ```
 
 ### AI-Written Percentage
@@ -201,20 +259,27 @@ Total: 10 patterns across 1 file
 After collecting all matches, compute an estimate of how AI-written the document is:
 
 ```bash
-# Count total non-blank lines in the file
-TOTAL_LINES=$(grep -c . "$TARGET" || echo 1)
+for target in "${TARGETS[@]}"; do
+    total_lines=$(grep -c . "$target" || echo 1)
 
-# Count distinct lines that contain at least one AI-tell match
-# (collect all grep -n output, extract line numbers, deduplicate)
-HIT_LINES=$(grep -niE "<all_patterns_combined>" "$TARGET" | cut -d: -f1 | sort -u | wc -l)
+    # Count distinct line numbers already reported for this file.
+    # The findings file uses grep -Hn-style output: path:line:match.
+    hit_lines=$(
+        awk -F: -v file="$target" '$1 == file && $2 ~ /^[0-9]+$/ { print $2 }' "$FINDINGS_FILE" |
+        sort -u |
+        wc -l |
+        tr -d ' '
+    )
 
-# Percentage = HIT_LINES / TOTAL_LINES * 100, rounded to nearest integer
+    percentage=$(( (hit_lines * 100 + total_lines / 2) / total_lines ))
+    printf '%s: %s%% (%s flagged lines out of %s non-blank lines)\n' "$target" "$percentage" "$hit_lines" "$total_lines"
+done
 ```
 
 Report the score immediately after the findings block:
 
 ```
-AI-written estimate: 14% (10 flagged lines out of 72 non-blank lines)
+AI-written estimate: 17% (12 flagged lines out of 72 non-blank lines)
   Low (0–15%)    — occasional AI patterns; targeted fixes sufficient
   Medium (16–40%) — noticeable AI register; consider paragraph rewrites
   High (41%+)    — pervasive AI tone; consider full-section rewrites
@@ -243,6 +308,7 @@ Fix "Filler openers" (2 instances)? (y/n)
 Fix "AI vocabulary" (5 instances)? (y/n)
 Fix "Hedge phrases" (1 instance)? (y/n)
 Fix "Transition clichés" (2 instances)? (y/n)
+Fix "Template phrasing" (2 instances)? (y/n)
 ```
 
 Proceed only with the categories the user approves.
@@ -314,6 +380,10 @@ Apply these without asking — the replacement is always better:
 | `paradigm shift` | *(remove or name what specifically changed)* |
 | `ecosystem` (vague) | *(remove or name the specific set of tools/teams/systems)* |
 | `Pro tip:` / `Quick tip:` | *(remove the label — just state the tip)* |
+| `now more than ever` | *(remove — state the current condition directly)* |
+| `At its core,` | *(remove — state the definition directly)* |
+| `The reality is` / `The truth is` | *(remove — the statement should carry itself)* |
+| `Let's take a closer look` | *(remove — just start the closer look)* |
 | `Most importantly,` / `Above all,` as openers | *(remove — let the sentence stand on its own weight)* |
 | `the best way to` | *(remove the superlative — state the approach directly)* |
 | `the most important [thing/step/aspect]` | *(remove — state what matters and why instead)* |
@@ -460,6 +530,7 @@ For these, show the current line and the proposed rewrite, then ask before chang
 
 - Filler openers (`Certainly!`, `Absolutely!`, `Perfect!`, `Indeed,`, `Obviously,`, `Great question!`, etc.) — show the full sentence so the user can see if removing the opener changes meaning
 - AI closers (`I hope this helps`, `I trust this helps`, `Let me know if you have any questions`, `Thank you for your question`, etc.) — show the paragraph end so the user can confirm removal doesn't cut real content
+- Template phrasing (`In today's...`, `in an era where`, `not just X but Y`, `whether you're X or Y`, `from X to Y`, `when it comes to`, `the future of X is`) — show the sentence and offer a direct rewrite that names the actual subject
 - Em dashes — show each occurrence in context; replace with a comma, colon, or parentheses depending on use, or remove the clause if it is padding. Flag files where em dashes appear more than once per 30 lines as likely overused.
 - `→` arrows — show each occurrence in context; legitimate in code examples, tables, or CLI output, but overused in prose as a connector ("This leads to → better outcomes"). Remove from prose and rewrite as a complete sentence. Flag files where `→` appears more than once per 20 lines as likely overused.
 - `---` section separators — flag standalone horizontal rules used between prose sections; remove and rely on headings for structure instead. Skip occurrences inside YAML front matter blocks or code fences.
@@ -580,6 +651,8 @@ These rules govern the text produced by the rewrite — not the skill's report.
 - **"In the next section" in long reference documents**: Navigation aids are legitimate in technical reference docs with 10+ sections; flag only in prose articles where headings already serve that purpose
 - **"I encourage you to" in call-to-action or closing sections**: In formal recommendation documents or closing remarks, this register may be appropriate — confirm before removing
 - **"Arguably the most" backed by a comparison**: If the sentence names the alternatives being compared, the hedge is honest — confirm before removing rather than auto-removing
+- **Template phrasing in marketing copy**: Phrases like `the future of X` or `from X to Y` may be intentional brand language; confirm before rewriting and prefer specificity over blanket deletion
+- **"When it comes to" in contrastive writing**: If the phrase introduces a real comparison between domains, rewrite only when a direct subject would be clearer
 - **Wordiness patterns in quotations**: Do not rewrite quoted speech or cited text, even if it contains flagged circumlocutions
 - **Non-English content**: Detect via charset/content check; report that patterns are English-only and skip
 - **Large files (>500 lines)**: Process in sections; report progress per section
