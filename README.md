@@ -15,7 +15,7 @@ Professional development studio for Claude Code CLI with 99 enterprise-grade ski
 
 **📢 New Claude Skills Format**: AI DevStudio has been updated to use the official Claude Skills format with proper YAML frontmatter and directory structure. Each skill now resides in its own directory (`skills/skill-name/SKILL.md`) following the [Agent Skills](https://agentskills.io) open standard.
 
-AI DevStudio is the most comprehensive development environment for Claude Code CLI, featuring 128 professional skills across 4 tiers (Tier 1: 23 essentials, Tier 2: 56 advanced, Tier 3: 16 power-user, Core: 33 foundation). This intelligent development studio extends Claude with enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging - leveraging Claude's contextual understanding while delivering structured, predictable outcomes optimized for Opus 4 and Sonnet 4 models.
+AI DevStudio is the most comprehensive development environment for Claude Code CLI, featuring 132 professional skills across 4 tiers (Tier 1: 24 essentials, Tier 2: 58 advanced, Tier 3: 16 power-user, Core: 34 foundation). This intelligent development studio extends Claude with enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging - leveraging Claude's contextual understanding while delivering structured, predictable outcomes optimized for Opus 4 and Sonnet 4 models.
 
 ## Quick Links
 
@@ -111,12 +111,12 @@ rm system-prompt.md                       # generic
 
 ## Skills
 
-128 professional skills optimized for Claude Code CLI's native capabilities, organized across 4 tiers:
+132 professional skills optimized for Claude Code CLI's native capabilities, organized across 4 tiers:
 
-**🚀 Tier 1 (23 skills)**: High-impact essentials for immediate productivity
-**⚡ Tier 2 (56 skills)**: Advanced features for professional workflows
+**🚀 Tier 1 (24 skills)**: High-impact essentials for immediate productivity
+**⚡ Tier 2 (58 skills)**: Advanced features for professional workflows
 **🔥 Tier 3 (16 skills)**: Power-user tools for specialized needs
-**🏛️ Core (33 skills)**: Foundational daily-driver skills
+**🏛️ Core (34 skills)**: Foundational daily-driver skills
 
 **Invocation**: Skills are invoked using the `/skill-name` syntax (e.g., `/commit`, `/session-start`, `/test-mutation`). These are Claude Skills as defined by Claude Code CLI.
 
@@ -727,6 +727,7 @@ This project builds upon and extends excellent work from the open-source communi
 - **[gstack](https://github.com/garrytan/gstack)** by Garry Tan - Builder philosophy (ETHOS.md), office-hours forcing questions, weekly retrospective workflow, post-deploy canary monitoring, careful destructive-command guardrails, context-save/restore WIP checkpoints, developer experience audit, and cross-session learnings management
 - **[antigravity-awesome-skills](https://github.com/sickn33/antigravity-awesome-skills)** by sickn33 - Risk classification system for skill frontmatter, behavioral contract testing and adversarial evaluation patterns for AI agents, decision-log artifact persistence pattern, and inspiration for prompt engineering, DDD modeling, and RAG implementation skills
 - **[mattpocock/skills](https://github.com/mattpocock/skills)** by Matt Pocock - Caveman token-compression mode, relentless grilling interview pattern, CONTEXT.md domain glossary format and ADR discipline, deep-module architectural vocabulary (module/seam/adapter/depth/leverage/locality), dependency-category framework for safe deepening, triage state machine, PRD synthesis pattern, and git guardrails pre-tool hook pattern
+- **[ECC (Everything Claude Code)](https://github.com/affaan-m/ECC)** by Affaan M - Tiered model delegation pattern (Haiku/Sonnet/Opus routing by task complexity), continuous learning loop (session pattern extraction → skill generation), cost tracking approach, prompt injection detection for agent configs and MCP servers, and context budget management techniques
 
 ### Development Methodologies & Patterns
 - **[obra/superpowers](https://github.com/obra/superpowers)** - TDD methodology, RED/GREEN/REFACTOR workflow, YAGNI/DRY principles, and collaboration patterns
@@ -820,7 +821,7 @@ This project builds upon and extends excellent work from the open-source communi
 - **[Section 508](https://www.section508.gov)** - Federal accessibility standards
 - **[WebAIM](https://webaim.org)** - Web accessibility resources and guidelines
 
-This repository enhances these foundations with 128 professional skills across 4 tiers, refined workflows, and integrated session management capabilities tailored for professional development environments.
+This repository enhances these foundations with 132 professional skills across 4 tiers, refined workflows, and integrated session management capabilities tailored for professional development environments.
 
 ## License
 

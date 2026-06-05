@@ -83,7 +83,32 @@ Use fixed templates with variable substitution instead of LLM generation for boi
 # Substitution: sed or Python string replacement
 ```
 
-### 9. Session State Tracking (70-80% savings on resume)
+### 9. Tiered Model Delegation (40-70% cost reduction)
+
+Route each sub-task to the cheapest model that can handle it, rather than defaulting everything to the primary model.
+
+**Routing heuristic:**
+
+| Task type | Model | Rationale |
+|---|---|---|
+| File search, grep, list, count | Bash (no model) | Zero tokens |
+| Simple edits, boilerplate, renaming | Haiku 4.5 | Cheap, fast |
+| Multi-file implementation, standard review | Sonnet 4.6 | Balanced (default) |
+| Complex architecture, security audit, deep analysis | Opus 4.8 | Worth the cost |
+
+**Implementation in skills:**
+
+```
+# In a skill that spawns subagents, declare model per task:
+agent("grep for TODO patterns", { model: "haiku" })     # exploration
+agent("implement the fix", {})                           # default (Sonnet)
+agent("audit for security regressions", { model: "opus" })  # deep analysis
+```
+
+**Expected savings:** 40-70% vs. running all tasks on Opus; 15-40% vs. running all on Sonnet.
+Apply to any skill that fans out multiple sub-tasks via the Agent tool or parallel-agents.
+
+### 10. Session State Tracking (70-80% savings on resume)
 
 Store session state in `.claude/sessions/<session-name>.json`:
 
