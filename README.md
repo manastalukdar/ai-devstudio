@@ -729,6 +729,8 @@ This project builds upon and extends excellent work from the open-source communi
 - **[mattpocock/skills](https://github.com/mattpocock/skills)** by Matt Pocock - Caveman token-compression mode, relentless grilling interview pattern, CONTEXT.md domain glossary format and ADR discipline, deep-module architectural vocabulary (module/seam/adapter/depth/leverage/locality), dependency-category framework for safe deepening, triage state machine, PRD synthesis pattern, and git guardrails pre-tool hook pattern
 - **[ECC (Everything Claude Code)](https://github.com/affaan-m/ECC)** by Affaan M - Tiered model delegation pattern (Haiku/Sonnet/Opus routing by task complexity), continuous learning loop (session pattern extraction → skill generation), cost tracking approach, prompt injection detection for agent configs and MCP servers, and context budget management techniques
 
+- **[Graphify](https://github.com/safishamsi/graphify)** by Safi Shamsi — Codebase knowledge graph skill for AI coding assistants; inspired the `/graphify` wrapper skill that turns any project into a queryable knowledge graph via the `graphifyy` CLI
+
 ### Development Methodologies & Patterns
 - **[obra/superpowers](https://github.com/obra/superpowers)** - TDD methodology, RED/GREEN/REFACTOR workflow, YAGNI/DRY principles, and collaboration patterns
 - **[Anthropic Skills](https://github.com/anthropics/skills)** - Official Claude Skills examples and best practices
