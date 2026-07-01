@@ -733,6 +733,8 @@ This project builds upon and extends excellent work from the open-source communi
 
 - **[awesome-opencode-skills](https://github.com/jshsakura/awesome-opencode-skills)** by jshsakura (ported from [VoltAgent/awesome-codex-subagents](https://github.com/VoltAgent/awesome-codex-subagents)) — 136+ specialist agent personas covering chaos engineering, SRE, AI governance, LLM QA, legacy modernization, assumption mapping, and first-principles reasoning; inspired 9 new skills: `/chaos-test`, `/incident-response`, `/sre-review`, `/ai-system-review`, `/llm-qa`, `/ai-governance`, `/assumption-map`, `/first-principles`, `/legacy-audit`
 
+- **[loop-engineering](https://github.com/cobusgreyling/loop-engineering)** by Cobus Greyling (inspired by Boris Cherny and Addy Osmani) — practical patterns and primitives for designing recurring agent loops: maker/checker split, minimal-fix discipline, budget/kill-switch controls, state management, and loop readiness scoring; inspired 8 new skills: `/minimal-fix`, `/loop-verify`, `/pr-babysitter`, `/ci-sweep`, `/issue-triage`, `/post-merge`, `/dep-sweep`, `/loop-design`
+
 ### Development Methodologies & Patterns
 - **[obra/superpowers](https://github.com/obra/superpowers)** - TDD methodology, RED/GREEN/REFACTOR workflow, YAGNI/DRY principles, and collaboration patterns
 - **[Anthropic Skills](https://github.com/anthropics/skills)** - Official Claude Skills examples and best practices
