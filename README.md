@@ -731,6 +731,8 @@ This project builds upon and extends excellent work from the open-source communi
 
 - **[Graphify](https://github.com/safishamsi/graphify)** by Safi Shamsi — Codebase knowledge graph skill for AI coding assistants; inspired the `/graphify` wrapper skill that turns any project into a queryable knowledge graph via the `graphifyy` CLI
 
+- **[awesome-opencode-skills](https://github.com/jshsakura/awesome-opencode-skills)** by jshsakura (ported from [VoltAgent/awesome-codex-subagents](https://github.com/VoltAgent/awesome-codex-subagents)) — 136+ specialist agent personas covering chaos engineering, SRE, AI governance, LLM QA, legacy modernization, assumption mapping, and first-principles reasoning; inspired 9 new skills: `/chaos-test`, `/incident-response`, `/sre-review`, `/ai-system-review`, `/llm-qa`, `/ai-governance`, `/assumption-map`, `/first-principles`, `/legacy-audit`
+
 ### Development Methodologies & Patterns
 - **[obra/superpowers](https://github.com/obra/superpowers)** - TDD methodology, RED/GREEN/REFACTOR workflow, YAGNI/DRY principles, and collaboration patterns
 - **[Anthropic Skills](https://github.com/anthropics/skills)** - Official Claude Skills examples and best practices
