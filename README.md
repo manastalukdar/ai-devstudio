@@ -2,7 +2,7 @@
 
 ## What is `AI DevStudio`?
 
-Professional development studio for Claude Code CLI with 159 professional skills that save 10-15 hours per week on repetitive development tasks.
+Professional development studio with 159 AI-agent skills that save 10-15 hours per week on repetitive development tasks. Works with Claude Code, Cursor, Gemini CLI, Codex CLI, Aider, and any capable LLM.
 
 ### The Problem
 
@@ -13,9 +13,9 @@ Professional development studio for Claude Code CLI with 159 professional skills
 
 🚧 **Active Development Notice**: AI DevStudio is continuously evolving based on real-world usage. We thoroughly test each skill and refine them as we discover gaps and opportunities. This ensures you're always getting battle-tested, production-ready tools that solve actual developer problems.
 
-**📢 New Claude Skills Format**: AI DevStudio has been updated to use the official Claude Skills format with proper YAML frontmatter and directory structure. Each skill now resides in its own directory (`skills/skill-name/SKILL.md`) following the [Agent Skills](https://agentskills.io) open standard.
+**📢 Portable Skill Format**: Each skill is a self-contained Markdown file (`skills/skill-name/SKILL.md`) with YAML frontmatter, following the [Agent Skills](https://agentskills.io) open standard. The skill *content* is model-agnostic — plain prose any capable LLM can follow. Claude Code-specific frontmatter fields (`disable-model-invocation`, `context: fork`) are stripped or ignored by other-target adapters.
 
-AI DevStudio is the most comprehensive development environment for Claude Code CLI, featuring 159 professional skills across 4 tiers (Tier 1: 29 essentials, Tier 2: 79 advanced, Tier 3: 17 power-user, Core: 34 foundation). This intelligent development studio extends Claude with enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging - leveraging Claude's contextual understanding while delivering structured, predictable outcomes optimized for Opus 4 and Sonnet 4 models.
+AI DevStudio is a comprehensive AI coding studio featuring 159 professional skills across 4 tiers (Tier 1: 29 essentials, Tier 2: 79 advanced, Tier 3: 17 power-user, Core: 34 foundation). It delivers enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging. The skills are designed for any capable AI coding agent; Claude Code is the primary native target, with adapters available for Cursor, Gemini CLI, Codex CLI, Aider, and a generic system-prompt export for any other tool or model.
 
 ## Quick Links
 
@@ -111,21 +111,25 @@ rm system-prompt.md                       # generic
 
 ## Skills
 
-159 professional skills optimized for Claude Code CLI's native capabilities, organized across 4 tiers:
+159 professional skills designed for AI coding agents, organized across 4 tiers:
 
 **🚀 Tier 1 (29 skills)**: High-impact essentials for immediate productivity
 **⚡ Tier 2 (79 skills)**: Advanced features for professional workflows
 **🔥 Tier 3 (17 skills)**: Power-user tools for specialized needs
 **🏛️ Core (34 skills)**: Foundational daily-driver skills
 
-**Invocation**: Skills are invoked using the `/skill-name` syntax (e.g., `/commit`, `/session-start`, `/test-mutation`). These are Claude Skills as defined by Claude Code CLI.
+**Invocation**: On Claude Code, skills are invoked with `/skill-name` (e.g., `/commit`, `/review`). On other agents the syntax differs — Cursor uses `/`, Codex reads from `AGENTS.md`, Aider uses `--read`, and generic targets export a `system-prompt.md` the model reads at session start.
 
-**Format**: Each skill follows the [official Claude Skills format](https://code.claude.com/docs/en/skills) with:
-- YAML frontmatter for configuration
+**Format**: Each skill follows the [Agent Skills](https://agentskills.io) open standard:
 - Skill-specific directories (`skills/skill-name/SKILL.md`)
+- YAML frontmatter for configuration (Claude Code-native fields are stripped by other-target adapters)
 - Token optimization strategies (60-90% reduction)
-- Proper invocation control (`disable-model-invocation` field)
-- Support for the [Agent Skills](https://agentskills.io) open standard
+- Model-agnostic prose instructions any capable LLM can follow
+
+**Caveats for non-Claude-Code targets**:
+- `disable-model-invocation` and `context: fork` are Claude Code-specific; adapters ignore them (the skill runs inline rather than in an isolated subagent)
+- The project infrastructure (commands, agents, hooks, MCP servers) is Claude Code-specific and is not exported to other targets — see [Project Infrastructure](#project-infrastructure)
+- Session management skills reference `.claude/` paths; on other agents these skills still work but the paths must be adjusted manually
 
 ### 🚀 Development Workflow
 
@@ -262,6 +266,8 @@ Professional development session tracking system:
 
 ## Project Infrastructure
 
+> **Claude Code only.** Commands, agents, hooks, MCP servers, and auto-loaded rules are Claude Code-specific and are not generated for other targets. If you are using a different agent, only the skills in `skills/` apply to you.
+
 Beyond skills, AI DevStudio ships a complete project-level infrastructure that wires up commands, agents, hooks, MCP servers, and auto-loaded rules.
 
 ### Commands
@@ -382,7 +388,7 @@ src/
 
 ### High-Level Architecture
 
-AI DevStudio transforms Claude Code CLI into an intelligent development assistant through a three-tier Command → Agent → Skill architecture:
+On Claude Code, AI DevStudio uses a three-tier Command → Agent → Skill architecture. On other agents, only the Skill layer applies — skills run directly, without the command orchestration or specialized sub-agents.
 
 ```plaintext
 Developer
@@ -504,12 +510,12 @@ Complex skills orchestrate specialized sub-agents:
 
 ### Design Philosophy
 
-**Why This Approach Works** (Based on Anthropic's Research):
+**Why This Approach Works**:
 
-- **Conversational Skills**: First-person language ("I'll help...") activates Claude's collaborative reasoning
-- **Build-Agnostic Instructions**: No hardcoded tools = works everywhere
-- **Think Tool Integration**: Strategic thinking improves decisions by 50%+ (Anthropic, 2025)
-- **Native Tools Only**: Uses Claude Code's actual capabilities, not imaginary APIs
+- **Conversational Skills**: First-person language ("I'll help...") activates collaborative reasoning in most LLMs
+- **Build-Agnostic Instructions**: No hardcoded tool calls = skills work across agents that expose different tool sets
+- **Think Sections**: `<think>` blocks for strategic reasoning improve decision quality; agents that don't support them treat them as prose context
+- **Portable by Default**: Skill content avoids Claude-specific APIs; tool names (`Read`, `Bash`, `Grep`) are mapped to agent equivalents by the adapter layer
 
 **Key Principles:**
 
@@ -520,14 +526,8 @@ Complex skills orchestrate specialized sub-agents:
 
 ### Technical Architecture
 
-**Native Tool Integration:**
-All skills leverage Claude Code CLI's native capabilities:
-
-- Grep tool for efficient pattern matching
-- Glob tool for file discovery
-- Read tool for content analysis
-- TodoWrite for progress tracking
-- Sub-agents for specialized analysis
+**Tool Integration:**
+Skills reference a consistent set of tool names (`Read`, `Bash`, `Grep`, `Glob`, `Write`). On Claude Code these map directly to native tools. On other agents the installer's adapter layer includes a tool-name mapping table so the model knows how to translate them to its own capabilities (e.g., Cursor's file reads, Aider's `--read` flag, or a generic `cat`/`grep` shell call).
 
 **Safety-First Design:**
 
@@ -542,9 +542,9 @@ Skills use first-person collaborative language ("I'll analyze your code...") rat
 **Framework Agnostic:**
 Intelligent detection without hardcoded assumptions enables universal compatibility across technology stacks.
 
-### User Skills Indicator
+### User Skills Indicator (Claude Code)
 
-Custom skills appear with a `(user)` tag in Claude Code CLI to distinguish them from built-in skills. This is normal and indicates your skills are properly installed.
+On Claude Code, custom skills appear with a `(user)` tag to distinguish them from built-in skills. This is normal and indicates your skills are properly installed.
 
 ```
 /commit
@@ -552,6 +552,8 @@ Custom skills appear with a `(user)` tag in Claude Code CLI to distinguish them 
 /help
     Show help                  ← Built-in skill
 ```
+
+On other agents, skills are surfaced differently — as rules files, system-prompt sections, or read-in context — depending on what the target agent supports.
 
 ## Performance Metrics
 
