@@ -2,7 +2,7 @@
 
 ## What is `AI DevStudio`?
 
-Professional development studio for Claude Code CLI with 99 enterprise-grade skills that save 10-15 hours per week on repetitive development tasks.
+Professional development studio for Claude Code CLI with 159 professional skills that save 10-15 hours per week on repetitive development tasks.
 
 ### The Problem
 
@@ -15,7 +15,7 @@ Professional development studio for Claude Code CLI with 99 enterprise-grade ski
 
 **📢 New Claude Skills Format**: AI DevStudio has been updated to use the official Claude Skills format with proper YAML frontmatter and directory structure. Each skill now resides in its own directory (`skills/skill-name/SKILL.md`) following the [Agent Skills](https://agentskills.io) open standard.
 
-AI DevStudio is the most comprehensive development environment for Claude Code CLI, featuring 132 professional skills across 4 tiers (Tier 1: 24 essentials, Tier 2: 58 advanced, Tier 3: 16 power-user, Core: 34 foundation). This intelligent development studio extends Claude with enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging - leveraging Claude's contextual understanding while delivering structured, predictable outcomes optimized for Opus 4 and Sonnet 4 models.
+AI DevStudio is the most comprehensive development environment for Claude Code CLI, featuring 159 professional skills across 4 tiers (Tier 1: 29 essentials, Tier 2: 79 advanced, Tier 3: 17 power-user, Core: 34 foundation). This intelligent development studio extends Claude with enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging - leveraging Claude's contextual understanding while delivering structured, predictable outcomes optimized for Opus 4 and Sonnet 4 models.
 
 ## Quick Links
 
@@ -111,11 +111,11 @@ rm system-prompt.md                       # generic
 
 ## Skills
 
-132 professional skills optimized for Claude Code CLI's native capabilities, organized across 4 tiers:
+159 professional skills optimized for Claude Code CLI's native capabilities, organized across 4 tiers:
 
-**🚀 Tier 1 (24 skills)**: High-impact essentials for immediate productivity
-**⚡ Tier 2 (58 skills)**: Advanced features for professional workflows
-**🔥 Tier 3 (16 skills)**: Power-user tools for specialized needs
+**🚀 Tier 1 (29 skills)**: High-impact essentials for immediate productivity
+**⚡ Tier 2 (79 skills)**: Advanced features for professional workflows
+**🔥 Tier 3 (17 skills)**: Power-user tools for specialized needs
 **🏛️ Core (34 skills)**: Foundational daily-driver skills
 
 **Invocation**: Skills are invoked using the `/skill-name` syntax (e.g., `/commit`, `/session-start`, `/test-mutation`). These are Claude Skills as defined by Claude Code CLI.
@@ -734,6 +734,8 @@ This project builds upon and extends excellent work from the open-source communi
 - **[awesome-opencode-skills](https://github.com/jshsakura/awesome-opencode-skills)** by jshsakura (ported from [VoltAgent/awesome-codex-subagents](https://github.com/VoltAgent/awesome-codex-subagents)) — 136+ specialist agent personas covering chaos engineering, SRE, AI governance, LLM QA, legacy modernization, assumption mapping, and first-principles reasoning; inspired 9 new skills: `/chaos-test`, `/incident-response`, `/sre-review`, `/ai-system-review`, `/llm-qa`, `/ai-governance`, `/assumption-map`, `/first-principles`, `/legacy-audit`
 
 - **[loop-engineering](https://github.com/cobusgreyling/loop-engineering)** by Cobus Greyling (inspired by Boris Cherny and Addy Osmani) — practical patterns and primitives for designing recurring agent loops: maker/checker split, minimal-fix discipline, budget/kill-switch controls, state management, and loop readiness scoring; inspired 8 new skills: `/minimal-fix`, `/loop-verify`, `/pr-babysitter`, `/ci-sweep`, `/issue-triage`, `/post-merge`, `/dep-sweep`, `/loop-design`
+
+- **[impeccable](https://github.com/pbakaus/impeccable)** by Paul Bakaus — design guidance system for AI coding agents featuring 23 commands, a 45-rule visual anti-pattern detector, OKLCH-first color strategy, register-aware design bifurcation (brand vs product), and a dual-agent critique pattern with degraded-mode signaling; inspired 9 new skills: `/ui-shape`, `/ui-critique`, `/ui-polish`, `/ui-harden`, `/ui-typeset`, `/ui-layout`, `/ui-colorize`, `/ui-animate`, `/visual-ai-tells`
 
 ### Development Methodologies & Patterns
 - **[obra/superpowers](https://github.com/obra/superpowers)** - TDD methodology, RED/GREEN/REFACTOR workflow, YAGNI/DRY principles, and collaboration patterns
