@@ -2,7 +2,7 @@
 
 ## What is `AI DevStudio`?
 
-Professional development studio with 159 AI-agent skills that save 10-15 hours per week on repetitive development tasks. Works with Claude Code, Cursor, Gemini CLI, Codex CLI, Aider, and any capable LLM.
+Professional development studio with 169 AI-agent skills that save 10-15 hours per week on repetitive development tasks. Works with Claude Code, Cursor, Gemini CLI, Codex CLI, Aider, and any capable LLM.
 
 ### The Problem
 
@@ -15,7 +15,7 @@ Professional development studio with 159 AI-agent skills that save 10-15 hours p
 
 **📢 Portable Skill Format**: Each skill is a self-contained Markdown file (`skills/skill-name/SKILL.md`) with YAML frontmatter, following the [Agent Skills](https://agentskills.io) open standard. The skill *content* is model-agnostic — plain prose any capable LLM can follow. Claude Code-specific frontmatter fields (`disable-model-invocation`, `context: fork`) are stripped or ignored by other-target adapters.
 
-AI DevStudio is a comprehensive AI coding studio featuring 159 professional skills across 4 tiers (Tier 1: 29 essentials, Tier 2: 79 advanced, Tier 3: 17 power-user, Core: 34 foundation). It delivers enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging. The skills are designed for any capable AI coding agent; Claude Code is the primary native target, with adapters available for Cursor, Gemini CLI, Codex CLI, Aider, and a generic system-prompt export for any other tool or model.
+AI DevStudio is a comprehensive AI coding studio featuring 169 professional skills across 4 tiers (Tier 1: 33 essentials, Tier 2: 85 advanced, Tier 3: 17 power-user, Core: 34 foundation). It delivers enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging. The skills are designed for any capable AI coding agent; Claude Code is the primary native target, with adapters available for Cursor, Gemini CLI, Codex CLI, Aider, and a generic system-prompt export for any other tool or model.
 
 ## Quick Links
 
@@ -111,10 +111,10 @@ rm system-prompt.md                       # generic
 
 ## Skills
 
-159 professional skills designed for AI coding agents, organized across 4 tiers:
+169 professional skills designed for AI coding agents, organized across 4 tiers:
 
-**🚀 Tier 1 (29 skills)**: High-impact essentials for immediate productivity
-**⚡ Tier 2 (79 skills)**: Advanced features for professional workflows
+**🚀 Tier 1 (33 skills)**: High-impact essentials for immediate productivity
+**⚡ Tier 2 (85 skills)**: Advanced features for professional workflows
 **🔥 Tier 3 (17 skills)**: Power-user tools for specialized needs
 **🏛️ Core (34 skills)**: Foundational daily-driver skills
 
@@ -738,6 +738,8 @@ This project builds upon and extends excellent work from the open-source communi
 - **[loop-engineering](https://github.com/cobusgreyling/loop-engineering)** by Cobus Greyling (inspired by Boris Cherny and Addy Osmani) — practical patterns and primitives for designing recurring agent loops: maker/checker split, minimal-fix discipline, budget/kill-switch controls, state management, and loop readiness scoring; inspired 8 new skills: `/minimal-fix`, `/loop-verify`, `/pr-babysitter`, `/ci-sweep`, `/issue-triage`, `/post-merge`, `/dep-sweep`, `/loop-design`
 
 - **[impeccable](https://github.com/pbakaus/impeccable)** by Paul Bakaus — design guidance system for AI coding agents featuring 23 commands, a 45-rule visual anti-pattern detector, OKLCH-first color strategy, register-aware design bifurcation (brand vs product), and a dual-agent critique pattern with degraded-mode signaling; inspired 9 new skills: `/ui-shape`, `/ui-critique`, `/ui-polish`, `/ui-harden`, `/ui-typeset`, `/ui-layout`, `/ui-colorize`, `/ui-animate`, `/visual-ai-tells`
+
+- **[agent-skills](https://github.com/addyosmani/agent-skills)** by Addy Osmani — engineering process skills for AI coding agents covering spec-driven workflows, incremental implementation discipline, observability instrumentation, source-grounded development, adversarial review patterns, and launch readiness; inspired 10 new skills: `/interview-me`, `/spec-driven-development`, `/incremental-implementation`, `/context-engineering`, `/source-driven-development`, `/doubt-driven-development`, `/browser-testing-with-devtools`, `/deprecation-and-migration`, `/observability-and-instrumentation`, `/shipping-and-launch`
 
 ### Development Methodologies & Patterns
 - **[obra/superpowers](https://github.com/obra/superpowers)** - TDD methodology, RED/GREEN/REFACTOR workflow, YAGNI/DRY principles, and collaboration patterns
