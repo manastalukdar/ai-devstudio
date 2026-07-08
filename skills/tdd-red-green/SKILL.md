@@ -15,21 +15,6 @@ I'll guide you through true Test-Driven Development with strict RED → GREEN �
 - YAGNI: You Aren't Gonna Need It
 - DRY: Don't Repeat Yourself
 
-**Token Optimization:**
-- ✅ Bash-based framework detection (minimal tokens)
-- ✅ Grep for test file patterns (100 tokens vs 2,000+ reading all files)
-- ✅ Caching framework detection - saves 70% on subsequent runs
-- ✅ Early exit when no test framework found - saves 95%
-- ✅ Template-based examples (no file reads needed)
-- ✅ Progressive guidance (step-by-step instead of all at once)
-- **Expected tokens:** 800-2,000 (vs. 2,500-4,000 unoptimized)
-- **Optimization status:** ✅ Optimized (Phase 2 Batch 2, 2026-01-26)
-
-**Caching Behavior:**
-- Cache location: `.claude/cache/test/framework-config.json`
-- Caches: Test framework, test patterns, run commands
-- Cache validity: 24 hours or until package.json changes
-- Shared with: `/test`, `/test-coverage`, `/test-mutation` skills
 
 ## Phase 1: Verify TDD Prerequisites
 
@@ -301,18 +286,18 @@ check_tdd_violations
 ## TDD Best Practices
 
 **Anti-Patterns to Avoid:**
-- ❌ Writing implementation before test
-- ❌ Writing comprehensive tests after code is done
-- ❌ Skipping the RED phase
-- ❌ Testing implementation details instead of behavior
-- ❌ Writing tests that always pass
+- Writing implementation before test
+- Writing comprehensive tests after code is done
+- Skipping the RED phase
+- Testing implementation details instead of behavior
+- Writing tests that always pass
 
 **TDD Benefits:**
-- ✅ Confidence in refactoring
-- ✅ Better design through testability
-- ✅ Living documentation
-- ✅ Fewer bugs in production
-- ✅ Faster debugging
+- Confidence in refactoring
+- Better design through testability
+- Living documentation
+- Fewer bugs in production
+- Faster debugging
 
 ## Integration Points
 
@@ -346,263 +331,10 @@ echo "  4. Commit: /commit"
 
 ## Token Optimization
 
-This skill implements aggressive token optimization achieving **60% token reduction** compared to naive implementation:
+**Expected range**: 800–2,000 tokens (initial), 100 tokens (no test framework)
 
-**Token Budget:**
-- **Current (Optimized):** 800-2,000 tokens per invocation
-- **Previous (Unoptimized):** 2,500-4,000 tokens per invocation
-- **Reduction:** 60-68% (60% average)
+**Caching**: Caches test framework config in `.claude/cache/test/framework-config.json` for 7 days. Invalidated when `package.json` changes.
 
-### Optimization Strategies Applied
+**Early exit**: Returns immediately if no test framework is found in the project.
 
-**1. Framework Detection Caching (saves 70% on cache hits)**
-
-```bash
-CACHE_FILE=".claude/cache/test/framework-config.json"
-
-if [ -f "$CACHE_FILE" ] && [ $(find "$CACHE_FILE" -mtime -1 | wc -l) -gt 0 ]; then
-    # Use cached framework (50 tokens)
-    FRAMEWORK=$(jq -r '.framework' "$CACHE_FILE")
-    TEST_COMMAND=$(jq -r '.test_command' "$CACHE_FILE")
-else
-    # Detect framework from scratch (400 tokens)
-    grep -q "jest" package.json && FRAMEWORK="jest"
-    grep -q "pytest" requirements.txt && FRAMEWORK="pytest"
-    # Cache for 24 hours
-fi
-
-# Savings: 87% on cache hit (50 vs 400 tokens)
-```
-
-**2. Template-Based Examples (saves 80%)**
-
-```bash
-# Instead of reading actual test files, use templates
-case $FRAMEWORK in
-    jest) cat << 'EOF'
-describe('Component', () => {
-  test('should work', () => {
-    expect(true).toBe(true);
-  });
-});
-EOF
-    ;;
-esac
-
-# Total: 100 tokens for template
-
-# vs. Reading example test files (500+ tokens)
-# Savings: 80% (100 vs 500 tokens)
-```
-
-**3. Progressive Guidance (saves 65%)**
-
-```bash
-# Step-by-step guidance (not all at once)
-# Level 1: Current phase only (800 tokens) - DEFAULT
-echo "=== STEP 1: RED (Write Failing Test) ==="
-# Show only RED phase guidance
-
-# Level 2: All phases (2,000 tokens) - with --full flag
-# Show RED + GREEN + REFACTOR all at once
-
-# Most users follow sequentially (saves 65%)
-```
-
-**4. Bash-Based Framework Detection (saves 95%)**
-
-```bash
-# Grep package.json patterns (30 tokens)
-if grep -q "jest" package.json; then FRAMEWORK="jest"; fi
-
-# vs. Reading and parsing package.json (600+ tokens)
-# Savings: 95% (30 vs 600 tokens)
-```
-
-**5. Early Exit When No Framework (saves 95%)**
-
-```bash
-FRAMEWORK=$(detect_test_framework)
-
-if [ -z "$FRAMEWORK" ]; then
-    echo "❌ No test framework detected"
-    echo "Install: npm install --save-dev jest"
-    exit 0  # Exit immediately, saves ~3,500 tokens
-fi
-
-# Continue only if framework exists
-```
-
-**6. Minimal TDD Health Check (saves 70%)**
-
-```bash
-# Use git log instead of reading files
-RECENT_FILES=$(git log --name-only --since="1 day ago" | grep -v test)
-
-# Check for corresponding test files (100 tokens)
-for file in $RECENT_FILES; do
-    test_file="${file%.ts}.test.ts"
-    [ -f "$test_file" ] && echo "✓ $test_file"
-done
-
-# vs. Reading all source and test files (2,000+ tokens)
-# Savings: 95% (100 vs 2,000 tokens)
-```
-
-### Optimization Impact by Operation
-
-| Operation | Before | After | Savings | Method |
-|-----------|--------|-------|---------|--------|
-| Framework detection | 600 | 50 | 92% | Cached configuration |
-| Test examples | 500 | 100 | 80% | Templates vs file reads |
-| TDD guidance | 1,200 | 400 | 67% | Progressive step-by-step |
-| Health check | 1,500 | 300 | 80% | Git log vs file analysis |
-| Workflow monitoring | 700 | 150 | 79% | Minimal checks |
-| **Total** | **4,500** | **1,000** | **78%** | Combined optimizations |
-
-### Performance Characteristics
-
-**First Run (No Cache):**
-- Token usage: 1,500-2,000 tokens
-- Detects test framework
-- Shows full TDD guidance
-- Caches framework config
-
-**Subsequent Runs (Cache Hit):**
-- Token usage: 800-1,200 tokens
-- Uses cached framework
-- Progressive guidance only
-- 40% savings vs first run
-
-**Health Check Only:**
-- Token usage: 400-600 tokens
-- Git-based file analysis
-- Minimal file reads
-- 85% savings vs full guidance
-
-### Cache Structure
-
-```
-.claude/cache/test/
-├── framework-config.json     # Shared with /test (24h TTL)
-│   ├── framework             # jest/vitest/pytest/go
-│   ├── test_command          # npm test/pytest/go test
-│   ├── test_patterns         # **/*.test.ts
-│   └── timestamp
-└── tdd-state.json            # TDD workflow state (optional)
-    ├── current_phase         # RED/GREEN/REFACTOR
-    ├── last_test_result      # pass/fail
-    └── cycle_count           # Number of cycles completed
-```
-
-### Usage Patterns
-
-**Efficient patterns:**
-```bash
-# Start TDD cycle (progressive guidance)
-/tdd-red-green                # 800-1,200 tokens
-
-# Full guidance at once
-/tdd-red-green --full         # 1,500-2,000 tokens
-
-# Health check only
-/tdd-red-green --check        # 400-600 tokens
-
-# Skip cache (force fresh detection)
-/tdd-red-green --no-cache     # 1,500-2,000 tokens
-```
-
-**Flags:**
-- `--full`: Show all phases at once
-- `--check`: TDD health check only
-- `--no-cache`: Force framework detection
-
-### Progressive Guidance Strategy
-
-**Phase 1 - RED (First call):**
-```bash
-# Show RED phase guidance (400 tokens)
-echo "Write failing test first..."
-# Template example for framework
-# Exit after RED phase
-
-# User writes test, runs it
-```
-
-**Phase 2 - GREEN (After RED):**
-```bash
-# Show GREEN phase guidance (400 tokens)
-echo "Write minimum code to pass..."
-# YAGNI principles
-# Run tests to verify
-
-# User implements, tests pass
-```
-
-**Phase 3 - REFACTOR (After GREEN):**
-```bash
-# Show REFACTOR guidance (400 tokens)
-echo "Clean up code..."
-# DRY principles
-# Safe refactoring loop
-
-# User refactors incrementally
-```
-
-**Total Progressive:** 1,200 tokens (vs 2,000 all at once)
-**Savings:** 40%
-
-### Integration with Other Skills
-
-**Optimized TDD workflow:**
-```bash
-/tdd-red-green           # RED phase guidance (800 tokens)
-# Write failing test
-/test                    # Run tests (see failure) (600 tokens)
-
-/tdd-red-green           # GREEN phase guidance (800 tokens)
-# Write minimum code
-/test                    # Run tests (see pass) (600 tokens)
-
-/tdd-red-green           # REFACTOR guidance (800 tokens)
-# Refactor code
-/test                    # Verify still passing (600 tokens)
-
-/commit                  # Commit cycle (400 tokens)
-
-# Total cycle: ~4,600 tokens (vs ~10,000 unoptimized)
-```
-
-### Shared Cache with Related Skills
-
-Cache shared with:
-- `/test` - Framework configuration
-- `/test-coverage` - Test patterns
-- `/test-mutation` - Test framework setup
-
-**Benefit:** Framework detection runs once, all test skills use cache (70% savings)
-
-### Key Optimization Insights
-
-1. **Framework detection is expensive** - Cache for 24 hours
-2. **Templates are better than examples** - No file reads needed
-3. **Progressive guidance fits TDD** - Users follow phases sequentially
-4. **Git log reveals TDD violations** - No need to read files
-5. **Most projects use one framework** - Cache hit rate >90%
-6. **TDD is methodology, not automation** - Minimal tool usage
-
-### Validation
-
-Tested on:
-- Jest projects: 1,000-1,500 tokens (first run), 600-800 (cached)
-- Pytest projects: 1,000-1,500 tokens (first run), 600-800 (cached)
-- Go projects: 1,000-1,500 tokens (first run), 600-800 (cached)
-- Health check only: 400-600 tokens
-
-**Success criteria:**
-- ✅ Token reduction ≥60% (achieved 60% avg)
-- ✅ TDD workflow guidance maintained
-- ✅ Works with all major frameworks
-- ✅ Cache hit rate >90% in active TDD
-- ✅ Progressive guidance natural for TDD
-- ✅ Methodology enforcement preserved
+**Patterns used**: Grep-before-Read, early exit, git diff scope default, caching
