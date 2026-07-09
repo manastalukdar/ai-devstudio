@@ -2,7 +2,7 @@
 
 ## What is `AI DevStudio`?
 
-Professional development studio with 169 AI-agent skills that save 10-15 hours per week on repetitive development tasks. Works with Claude Code, Cursor, Gemini CLI, Codex CLI, Aider, and any capable LLM.
+Professional development studio with 170 AI-agent skills that save 10-15 hours per week on repetitive development tasks. Works with Claude Code, Cursor, Gemini CLI, Codex CLI, Aider, and any capable LLM.
 
 ### The Problem
 
@@ -15,7 +15,7 @@ Professional development studio with 169 AI-agent skills that save 10-15 hours p
 
 **📢 Portable Skill Format**: Each skill is a self-contained Markdown file (`skills/skill-name/SKILL.md`) with YAML frontmatter, following the [Agent Skills](https://agentskills.io) open standard. The skill *content* is model-agnostic — plain prose any capable LLM can follow. Claude Code-specific frontmatter fields (`disable-model-invocation`, `context: fork`) are stripped or ignored by other-target adapters.
 
-AI DevStudio is a comprehensive AI coding studio featuring 169 professional skills across 4 tiers (Tier 1: 33 essentials, Tier 2: 85 advanced, Tier 3: 17 power-user, Core: 34 foundation). It delivers enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging. The skills are designed for any capable AI coding agent; Claude Code is the primary native target, with adapters available for Cursor, Gemini CLI, Codex CLI, Aider, and a generic system-prompt export for any other tool or model.
+AI DevStudio is a comprehensive AI coding studio featuring 170 professional skills across 4 tiers (Tier 1: 33 essentials, Tier 2: 86 advanced, Tier 3: 17 power-user, Core: 34 foundation). It delivers enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging. The skills are designed for any capable AI coding agent; Claude Code is the primary native target, with adapters available for Cursor, Gemini CLI, Codex CLI, Aider, and a generic system-prompt export for any other tool or model.
 
 ## Quick Links
 
@@ -111,10 +111,10 @@ rm system-prompt.md                       # generic
 
 ## Skills
 
-169 professional skills designed for AI coding agents, organized across 4 tiers:
+170 professional skills designed for AI coding agents, organized across 4 tiers:
 
 **🚀 Tier 1 (33 skills)**: High-impact essentials for immediate productivity
-**⚡ Tier 2 (85 skills)**: Advanced features for professional workflows
+**⚡ Tier 2 (86 skills)**: Advanced features for professional workflows
 **🔥 Tier 3 (17 skills)**: Power-user tools for specialized needs
 **🏛️ Core (34 skills)**: Foundational daily-driver skills
 
@@ -205,6 +205,12 @@ rm system-prompt.md                       # generic
 
 ```bash
 /migration-generate            # Generate database migrations from schema changes
+```
+
+### 📐 Diagramming (NEW)
+
+```bash
+/drawio-skill                  # Generate .drawio diagrams (flowcharts, arch, UML, ERD, C4, ML models) and export PNG/SVG/PDF via draw.io CLI
 ```
 
 ### 🎨 Code Generation & Type Safety (NEW)
@@ -740,6 +746,8 @@ This project builds upon and extends excellent work from the open-source communi
 - **[impeccable](https://github.com/pbakaus/impeccable)** by Paul Bakaus — design guidance system for AI coding agents featuring 23 commands, a 45-rule visual anti-pattern detector, OKLCH-first color strategy, register-aware design bifurcation (brand vs product), and a dual-agent critique pattern with degraded-mode signaling; inspired 9 new skills: `/ui-shape`, `/ui-critique`, `/ui-polish`, `/ui-harden`, `/ui-typeset`, `/ui-layout`, `/ui-colorize`, `/ui-animate`, `/visual-ai-tells`
 
 - **[agent-skills](https://github.com/addyosmani/agent-skills)** by Addy Osmani — engineering process skills for AI coding agents covering spec-driven workflows, incremental implementation discipline, observability instrumentation, source-grounded development, adversarial review patterns, and launch readiness; inspired 10 new skills: `/interview-me`, `/spec-driven-development`, `/incremental-implementation`, `/context-engineering`, `/source-driven-development`, `/doubt-driven-development`, `/browser-testing-with-devtools`, `/deprecation-and-migration`, `/observability-and-instrumentation`, `/shipping-and-launch`
+
+- **[drawio-skill](https://github.com/Agents365-ai/drawio-skill)** by Agents365-ai — full draw.io diagram skill with 28 bundled Python scripts (import graphs for Python/JS/TS/Go/Rust, SQL ERD, OpenAPI, Terraform/K8s/Compose, C4 model, sequence, heatmap, diff, timelapse, export utilities), 10 on-demand reference docs, 5 style presets, and a 10k-shape index; vendored directly as `/drawio-skill`
 
 ### Development Methodologies & Patterns
 - **[obra/superpowers](https://github.com/obra/superpowers)** - TDD methodology, RED/GREEN/REFACTOR workflow, YAGNI/DRY principles, and collaboration patterns

@@ -81,10 +81,9 @@ def install_claude(skills_dir: Path) -> None:
             print(f"  skipping {skill_dir.name} (no SKILL.md)")
             continue
         target_dir = dest / skill_dir.name
-        target_dir.mkdir(parents=True, exist_ok=True)
-        for f in skill_dir.iterdir():
-            if f.is_file():
-                shutil.copy2(f, target_dir / f.name)
+        if target_dir.exists():
+            shutil.rmtree(target_dir)
+        shutil.copytree(skill_dir, target_dir)
         print(f"  + {skill_dir.name}")
         count += 1
 

@@ -87,6 +87,7 @@ if [[ "$EXISTING" -gt 0 ]]; then
 fi
 
 echo "Downloading skills..."
+echo "Note: skills with bundled scripts/data (e.g. drawio-skill) require 'python3 install.py' for full installation."
 INSTALLED=0
 FAILED=0
 for skill in "${SKILLS[@]}"; do
