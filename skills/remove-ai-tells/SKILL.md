@@ -290,7 +290,7 @@ Show the current line and proposed rewrite; wait for user response before changi
 - **Bold overuse** — show a count of bolded phrases per page; ask which to remove.
 - **Context-dependent AI vocabulary** (see Edge Cases below for which words) — show the sentence and ask.
 - **Rhetorical question-answer pairs** — show the question and immediate answer; offer to merge into a single declarative sentence.
-- **Contrast structures** (`It's not X, it's Y` / `Not A. Not B. But C.`) — show the sentence; rewrite as a plain positive statement.
+- **Contrast structures** (`It's not X, it's Y` / `Not A. Not B. But C.` / `Despite this,`) — show the sentence; rewrite as a plain positive statement.
 - **Vague authority** — remove the attribution and state the claim directly, or cut the sentence if there is no specific source.
 - **Importance sentences** — any sentence whose only purpose is to state impact, legacy, significance, or broader trends without a specific claim; delete it.
 - **Sentences over 16 words** — show the sentence and a shorter rewrite.
