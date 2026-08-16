@@ -9,7 +9,7 @@
 
 ## Project Overview
 
-AI DevStudio is a comprehensive development environment featuring **170 professional skills** for Claude Code CLI that automate repetitive development tasks and save 10-15 hours per week.
+AI DevStudio is a comprehensive development environment featuring **171 professional skills** for Claude Code CLI that automate repetitive development tasks and save 10-15 hours per week.
 
 Key capability areas: Testing & TDD, CI/CD & DevOps, API Development, Database Management, Security & Code Quality, Debugging & Performance, Git Workflows, Documentation, Code Generation, Session Management, MCP Integration.
 
@@ -84,9 +84,9 @@ See [README.md](README.md) for full installation instructions and skill listings
 
 ## Current State
 
-- **Skills**: 170 implemented
+- **Skills**: 171 implemented
 - **Token Optimization**: 100% complete — 60-70% average reduction across all skills
-- **Tiers**: Tier 1 (33), Tier 2 (86), Tier 3 (17), Core (34)
+- **Tiers**: Tier 1 (33), Tier 2 (87), Tier 3 (17), Core (34)
 
 See [`docs/skills/`](docs/skills/) for full expansion plan and per-batch implementation summaries.
 
