@@ -30,3 +30,6 @@ desktop.ini
 
 # Claude cache
 .claude/cache/
+
+# Local settings (machine-specific, not for version control)
+.claude/settings.local.json
