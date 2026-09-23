@@ -2,7 +2,7 @@
 
 ## What is `AI DevStudio`?
 
-Professional development studio with 170 AI-agent skills that save 10-15 hours per week on repetitive development tasks. Works with Claude Code, Cursor, Gemini CLI, Codex CLI, Aider, and any capable LLM.
+Professional development studio with 179 AI-agent skills that save 10-15 hours per week on repetitive development tasks. Works with Claude Code, Cursor, Gemini CLI, Codex CLI, Aider, and any capable LLM.
 
 ### The Problem
 
@@ -15,7 +15,7 @@ Professional development studio with 170 AI-agent skills that save 10-15 hours p
 
 **📢 Portable Skill Format**: Each skill is a self-contained Markdown file (`skills/skill-name/SKILL.md`) with YAML frontmatter, following the [Agent Skills](https://agentskills.io) open standard. The skill *content* is model-agnostic — plain prose any capable LLM can follow. Claude Code-specific frontmatter fields (`disable-model-invocation`, `context: fork`) are stripped or ignored by other-target adapters.
 
-AI DevStudio is a comprehensive AI coding studio featuring 171 professional skills across 4 tiers (Tier 1: 33 essentials, Tier 2: 87 advanced, Tier 3: 17 power-user, Core: 34 foundation). It delivers enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging. The skills are designed for any capable AI coding agent; Claude Code is the primary native target, with adapters available for Cursor, Gemini CLI, Codex CLI, Aider, and a generic system-prompt export for any other tool or model.
+AI DevStudio is a comprehensive AI coding studio featuring 179 professional skills across 4 tiers (Tier 1: 33 essentials, Tier 2: 95 advanced, Tier 3: 17 power-user, Core: 34 foundation). It delivers enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging. The skills are designed for any capable AI coding agent; Claude Code is the primary native target, with adapters available for Cursor, Gemini CLI, Codex CLI, Aider, and a generic system-prompt export for any other tool or model.
 
 ## Quick Links
 
@@ -111,10 +111,10 @@ rm system-prompt.md                       # generic
 
 ## Skills
 
-170 professional skills designed for AI coding agents, organized across 4 tiers:
+179 professional skills designed for AI coding agents, organized across 4 tiers:
 
 **🚀 Tier 1 (33 skills)**: High-impact essentials for immediate productivity
-**⚡ Tier 2 (87 skills)**: Advanced features for professional workflows
+**⚡ Tier 2 (95 skills)**: Advanced features for professional workflows
 **🔥 Tier 3 (17 skills)**: Power-user tools for specialized needs
 **🏛️ Core (34 skills)**: Foundational daily-driver skills
 
@@ -144,6 +144,8 @@ rm system-prompt.md                       # generic
 /undo                           # Safe rollback with git checkpoint restore
 /tdd-red-green                   # Enforce true RED→GREEN→REFACTOR TDD workflow (NEW)
 /e2e-generate                    # Generate end-to-end tests with Playwright (NEW)
+/search-first                    # Search repo, stdlib, installed deps, then external tools before writing custom code (NEW)
+/completion-verify               # Verify build, types, lint, tests, diff scope, and security before claiming done (NEW)
 ```
 
 ### 🛡️ Code Quality & Security
@@ -160,6 +162,8 @@ rm system-prompt.md                       # generic
 /dependency-audit      # Comprehensive dependency security and license audit (NEW)
 /secrets-scan          # Scan for exposed secrets/credentials/API keys (NEW)
 /remove-ai-marks       # Strip invisible Unicode, C2PA/EXIF/XMP metadata, and statistical watermarks from files (requires local Docker service) (NEW)
+/click-path-audit      # Trace UI touchpoints through full state-change sequences to find conflicting handlers (NEW)
+/fact-forcing-gate     # Install a hook that blocks the first edit per file until importers, schema, and instruction are stated (NEW)
 ```
 
 ### 🔍 Advanced Analysis & Debugging
@@ -170,6 +174,8 @@ rm system-prompt.md                       # generic
 /contributing          # Complete contribution readiness analysis
 /make-it-pretty        # Improve readability without functional changes
 /debug-systematic      # Systematic debugging workflow with hypothesis testing (NEW)
+/agent-debug           # Structured self-debugging for failed AI agent runs with introspection report (NEW)
+/code-tour             # Generate VS Code CodeTour walkthroughs with verified file:line anchors (NEW)
 ```
 
 ### 📋 Session & Project Management
@@ -186,6 +192,7 @@ rm system-prompt.md                       # generic
 /docs                          # Smart documentation management and updates
 /docs-sync                     # Sync CLAUDE.md, AGENTS.md, README.md, and docs/ with code changes
 /todos-to-issues               # Convert code TODOs to GitHub issues
+/config-cleanup                # Garbage-collect stale skills, hooks, permissions, MCP servers, and caches with per-item confirmation (NEW)
 ```
 
 ### ⚙️ CI/CD & DevOps (NEW)
@@ -226,6 +233,7 @@ rm system-prompt.md                       # generic
 ```bash
 /brainstorm                    # Interactive design refinement with structured exploration
 /write-plan                    # Create detailed implementation plans with task breakdown
+/council                       # Four-voice structured disagreement for ambiguous decisions and go/no-go calls (NEW)
 ```
 
 ### 🔌 MCP & Tool Integration (NEW)
@@ -736,7 +744,7 @@ This project builds upon and extends excellent work from the open-source communi
 - **[gstack](https://github.com/garrytan/gstack)** by Garry Tan - Builder philosophy (ETHOS.md), office-hours forcing questions, weekly retrospective workflow, post-deploy canary monitoring, careful destructive-command guardrails, context-save/restore WIP checkpoints, developer experience audit, and cross-session learnings management
 - **[antigravity-awesome-skills](https://github.com/sickn33/antigravity-awesome-skills)** by sickn33 - Risk classification system for skill frontmatter, behavioral contract testing and adversarial evaluation patterns for AI agents, decision-log artifact persistence pattern, and inspiration for prompt engineering, DDD modeling, and RAG implementation skills
 - **[mattpocock/skills](https://github.com/mattpocock/skills)** by Matt Pocock - Caveman token-compression mode, relentless grilling interview pattern, CONTEXT.md domain glossary format and ADR discipline, deep-module architectural vocabulary (module/seam/adapter/depth/leverage/locality), dependency-category framework for safe deepening, triage state machine, PRD synthesis pattern, and git guardrails pre-tool hook pattern
-- **[ECC (Everything Claude Code)](https://github.com/affaan-m/ECC)** by Affaan M - Tiered model delegation pattern (Haiku/Sonnet/Opus routing by task complexity), continuous learning loop (session pattern extraction → skill generation), cost tracking approach, prompt injection detection for agent configs and MCP servers, and context budget management techniques
+- **[ECC (Everything Claude Code)](https://github.com/affaan-m/ECC)** by Affaan M - Tiered model delegation pattern (Haiku/Sonnet/Opus routing by task complexity), continuous learning loop (session pattern extraction → skill generation), cost tracking approach, prompt injection detection for agent configs and MCP servers, and context budget management techniques including phase-boundary strategic compaction; inspired 8 more skills: `/search-first`, `/completion-verify`, `/council`, `/fact-forcing-gate`, `/click-path-audit`, `/config-cleanup`, `/agent-debug`, `/code-tour`
 
 - **[Graphify](https://github.com/safishamsi/graphify)** by Safi Shamsi — Codebase knowledge graph skill for AI coding assistants; inspired the `/graphify` wrapper skill that turns any project into a queryable knowledge graph via the `graphifyy` CLI
 

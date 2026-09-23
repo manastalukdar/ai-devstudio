@@ -103,6 +103,21 @@ Largest reducible contributors:
   - Active session file: 2,400 tokens — archive with /session-end if work is done
 ```
 
+### Phase 6: Pick the compaction point (with `--compact` flag)
+
+Auto-compaction fires at an arbitrary moment, often mid-task. Recommend a manual `/compact <focus>` at the next phase boundary instead:
+
+| Transition | Compact? | Why |
+| --- | --- | --- |
+| Research → Planning | Yes | Research is bulky; the plan is the distilled output |
+| Planning → Implementation | Yes | Once the plan is written to a file |
+| Implementation → Testing | Maybe | Keep if tests reference recent edits |
+| Debugging → Next feature | Yes | Debug traces pollute unrelated work |
+| After a failed approach | Yes | Clear dead-end reasoning before retrying |
+| Mid-implementation | No | Losing paths, names, and partial state is costly |
+
+**Write before compacting.** Files, CLAUDE.md, memory files, and git state survive compaction. Reasoning, file contents read earlier, and verbally stated preferences do not, and a todo list may not exist on newer Claude Code versions. Save the plan and open decisions to a file (or `/context-save`) first, then run `/compact Focus on <next step>`.
+
 ## Token Optimization
 
 **Expected range**: 200–500 tokens (initial), 100–200 tokens (subsequent calls)
