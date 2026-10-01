@@ -2,7 +2,7 @@
 
 ## What is `AI DevStudio`?
 
-Professional development studio with 179 AI-agent skills that save 10-15 hours per week on repetitive development tasks. Works with Claude Code, Cursor, Gemini CLI, Codex CLI, Aider, and any capable LLM.
+Professional development studio with 199 AI-agent skills that save 10-15 hours per week on repetitive development tasks. Works with Claude Code, Cursor, Gemini CLI, Codex CLI, Aider, and any capable LLM.
 
 ### The Problem
 
@@ -15,7 +15,7 @@ Professional development studio with 179 AI-agent skills that save 10-15 hours p
 
 **📢 Portable Skill Format**: Each skill is a self-contained Markdown file (`skills/skill-name/SKILL.md`) with YAML frontmatter, following the [Agent Skills](https://agentskills.io) open standard. The skill *content* is model-agnostic — plain prose any capable LLM can follow. Claude Code-specific frontmatter fields (`disable-model-invocation`, `context: fork`) are stripped or ignored by other-target adapters.
 
-AI DevStudio is a comprehensive AI coding studio featuring 179 professional skills across 4 tiers (Tier 1: 33 essentials, Tier 2: 95 advanced, Tier 3: 17 power-user, Core: 34 foundation). It delivers enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging. The skills are designed for any capable AI coding agent; Claude Code is the primary native target, with adapters available for Cursor, Gemini CLI, Codex CLI, Aider, and a generic system-prompt export for any other tool or model.
+AI DevStudio is a comprehensive AI coding studio featuring 199 professional skills across 4 tiers (Tier 1: 33 essentials, Tier 2: 115 advanced, Tier 3: 17 power-user, Core: 34 foundation). It delivers enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging. The skills are designed for any capable AI coding agent; Claude Code is the primary native target, with adapters available for Cursor, Gemini CLI, Codex CLI, Aider, and a generic system-prompt export for any other tool or model.
 
 ## Quick Links
 
@@ -111,10 +111,10 @@ rm system-prompt.md                       # generic
 
 ## Skills
 
-179 professional skills designed for AI coding agents, organized across 4 tiers:
+199 professional skills designed for AI coding agents, organized across 4 tiers:
 
 **🚀 Tier 1 (33 skills)**: High-impact essentials for immediate productivity
-**⚡ Tier 2 (95 skills)**: Advanced features for professional workflows
+**⚡ Tier 2 (115 skills)**: Advanced features for professional workflows
 **🔥 Tier 3 (17 skills)**: Power-user tools for specialized needs
 **🏛️ Core (34 skills)**: Foundational daily-driver skills
 
@@ -743,7 +743,7 @@ This project builds upon and extends excellent work from the open-source communi
 - **[gbrain](https://github.com/garrytan/gbrain)** by Garry Tan - Compiled Truth + Timeline agent memory pattern, RESOLVER.md intent-to-skill dispatcher, conventions layer architecture, signal-detector ambient capture pattern, skillify conformance checklist, and brain-first lookup convention
 - **[gstack](https://github.com/garrytan/gstack)** by Garry Tan - Builder philosophy (ETHOS.md), office-hours forcing questions, weekly retrospective workflow, post-deploy canary monitoring, careful destructive-command guardrails, context-save/restore WIP checkpoints, developer experience audit, and cross-session learnings management
 - **[antigravity-awesome-skills](https://github.com/sickn33/antigravity-awesome-skills)** by sickn33 - Risk classification system for skill frontmatter, behavioral contract testing and adversarial evaluation patterns for AI agents, decision-log artifact persistence pattern, and inspiration for prompt engineering, DDD modeling, and RAG implementation skills
-- **[mattpocock/skills](https://github.com/mattpocock/skills)** by Matt Pocock - Caveman token-compression mode, relentless grilling interview pattern, CONTEXT.md domain glossary format and ADR discipline, deep-module architectural vocabulary (module/seam/adapter/depth/leverage/locality), dependency-category framework for safe deepening, triage state machine, PRD synthesis pattern, and git guardrails pre-tool hook pattern
+- **[mattpocock/skills](https://github.com/mattpocock/skills)** ([aihero.dev/skills](https://www.aihero.dev/skills)) by Matt Pocock - Caveman token-compression mode, relentless grilling interview pattern, CONTEXT.md domain glossary format and ADR discipline, deep-module architectural vocabulary (module/seam/adapter/depth/leverage/locality), dependency-category framework for safe deepening, triage state machine, PRD synthesis pattern, and git guardrails pre-tool hook pattern
 - **[ECC (Everything Claude Code)](https://github.com/affaan-m/ECC)** by Affaan M - Tiered model delegation pattern (Haiku/Sonnet/Opus routing by task complexity), continuous learning loop (session pattern extraction → skill generation), cost tracking approach, prompt injection detection for agent configs and MCP servers, and context budget management techniques including phase-boundary strategic compaction; inspired 8 more skills: `/search-first`, `/completion-verify`, `/council`, `/fact-forcing-gate`, `/click-path-audit`, `/config-cleanup`, `/agent-debug`, `/code-tour`
 
 - **[Graphify](https://github.com/safishamsi/graphify)** by Safi Shamsi — Codebase knowledge graph skill for AI coding assistants; inspired the `/graphify` wrapper skill that turns any project into a queryable knowledge graph via the `graphifyy` CLI
