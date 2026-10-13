@@ -2,7 +2,7 @@
 
 ## What is `AI DevStudio`?
 
-Professional development studio with 199 AI-agent skills that save 10-15 hours per week on repetitive development tasks. Works with Claude Code, Cursor, Gemini CLI, Codex CLI, Aider, and any capable LLM.
+Professional development studio with 203 AI-agent skills that save 10-15 hours per week on repetitive development tasks. Works with Claude Code, Cursor, Gemini CLI, Codex CLI, Aider, and any capable LLM.
 
 ### The Problem
 
@@ -15,7 +15,7 @@ Professional development studio with 199 AI-agent skills that save 10-15 hours p
 
 **📢 Portable Skill Format**: Each skill is a self-contained Markdown file (`skills/skill-name/SKILL.md`) with YAML frontmatter, following the [Agent Skills](https://agentskills.io) open standard. The skill *content* is model-agnostic — plain prose any capable LLM can follow. Claude Code-specific frontmatter fields (`disable-model-invocation`, `context: fork`) are stripped or ignored by other-target adapters.
 
-AI DevStudio is a comprehensive AI coding studio featuring 199 professional skills across 4 tiers (Tier 1: 33 essentials, Tier 2: 115 advanced, Tier 3: 17 power-user, Core: 34 foundation). It delivers enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging. The skills are designed for any capable AI coding agent; Claude Code is the primary native target, with adapters available for Cursor, Gemini CLI, Codex CLI, Aider, and a generic system-prompt export for any other tool or model.
+AI DevStudio is a comprehensive AI coding studio featuring 203 professional skills across 4 tiers (Tier 1: 33 essentials, Tier 2: 115 advanced, Tier 3: 17 power-user, Core: 34 foundation). It delivers enterprise-grade workflows for TDD, CI/CD, API testing, performance optimization, security scanning, and advanced debugging. The skills are designed for any capable AI coding agent; Claude Code is the primary native target, with adapters available for Cursor, Gemini CLI, Codex CLI, Aider, and a generic system-prompt export for any other tool or model.
 
 ## Quick Links
 
@@ -111,7 +111,7 @@ rm system-prompt.md                       # generic
 
 ## Skills
 
-199 professional skills designed for AI coding agents, organized across 4 tiers:
+203 professional skills designed for AI coding agents, organized across 4 tiers:
 
 **🚀 Tier 1 (33 skills)**: High-impact essentials for immediate productivity
 **⚡ Tier 2 (115 skills)**: Advanced features for professional workflows
@@ -762,7 +762,7 @@ This project builds upon and extends excellent work from the open-source communi
 
 ### Development Methodologies & Patterns
 - **[obra/superpowers](https://github.com/obra/superpowers)** - TDD methodology, RED/GREEN/REFACTOR workflow, YAGNI/DRY principles, and collaboration patterns
-- **[Anthropic Skills](https://github.com/anthropics/skills)** - Official Claude Skills examples and best practices
+- **[Anthropic Skills](https://github.com/anthropics/skills)** - Official Claude Skills examples and best practices; ported `/frontend-design` (distinctive UI design guidance), `/doc-coauthoring` (3-stage structured documentation workflow), `/discernment-nudge` (critical reflection prompts after substantive advice), and `/mcp-builder` (guide for building new MCP servers)
 - **[Model Context Protocol (MCP)](https://modelcontextprotocol.io)** - MCP integration standards and server specifications
 
 ### Testing & Quality Assurance
